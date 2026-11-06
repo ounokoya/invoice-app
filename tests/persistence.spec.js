@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { open, DATA, KEY, THEME_KEY, cards, card, title, main, button, dialog, group, field, goBack, newButton, themeButton, pixel, hex, close, style, sameColor } from './helpers.js'
+import { open, DATA, KEY, THEME_KEY, cards, card, title, main, button, dialog, group, field, goBack, newButton, themeButton, pixel, hex, close, style, sameColor, money } from './helpers.js'
 
 // Spec §2, §4, §6 et §8 — S25 à S28 : persistance et thème
 
@@ -38,11 +38,20 @@ test('S26 — navigateur vidé : les 7 factures de data.json', async ({ page }) 
 
   // Données gardées sans la forme de D1 : data.json est relu (rapport regénéré, N1)
   const { items, ...withoutItems } = DATA[0]
-  for (const saved of [[null], [withoutItems], [{ ...DATA[0], status: 'sent' }]]) {
+  const line = DATA[0].items[0]
+  const broken = [[null], [withoutItems], [{ ...DATA[0], status: 'sent' }], [{ ...DATA[0], items: [{ ...line, quantity: -1 }] }],
+    [{ ...DATA[0], createdAt: '18/08/2021' }], [{ ...DATA[0], paymentTerms: 5 }]]
+  for (const saved of broken) {
     await open(page, 1440, 900, { invoices: saved })
     await expect(cards(page), JSON.stringify(saved).slice(0, 40)).toHaveCount(DATA.length)
   }
   expect(items.length).toBeGreaterThan(0)
+
+  // Facture gardée au total faux : total recalculé depuis ses lignes ; date de D10 acceptée
+  await open(page, 1440, 900, { invoices: [{ ...DATA[0], items: [{ ...line, total: 1 }], total: 1 }, DATA.find((inv) => inv.id === 'AA1449')] })
+  await expect(cards(page)).toHaveCount(2)
+  await expect(card(page, DATA[0].id)).toContainText(money(line.quantity * line.price))
+  await expect(card(page, 'AA1449')).toContainText('Due 14 Oct 2021')
 })
 
 test('S27 — thème de l\'appareil au premier passage, puis le choix gardé', async ({ page }) => {

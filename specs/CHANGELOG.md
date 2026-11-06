@@ -2,6 +2,24 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.1] — 2026-11-06
+
+Suite du rapport IA FM (8,8 / 10, `specs/analyse/2026-11-06-rapport-ia.md`), avec l'accord de Koya.
+
+### Fixed
+- Changement de vue : le focus va au contenu (au retour à la liste, à la carte de la facture quittée) et le titre de la vue est annoncé (A9, S35 ; R4).
+- La suppression rend le focus à « Delete » à sa fermeture, par Cancel ou Échap (A10, S24 ; R5).
+- Les messages du bas du formulaire sont annoncés (`role="alert"`, S14 ; R6).
+- Écran vide : plus de `<br>` forcé ; largeur du bloc calée par mesure, mêmes lignes que la maquette (R8).
+
+### Changed
+- Un seul point de rupture : le token `--breakpoint-md`, lu par le CSS (`md:`, `@variant md`) et par `media.svelte.js` (R9).
+- S27 vérifie le thème dans les deux sens (R3) ; 96 tests.
+- README : lien du dépôt et table des tests par parcours (R10 ; R1 et R2 étaient des faux positifs).
+
+### Removed
+- `invoice.html` du starter (R7).
+
 ## [1.0.0] — 2026-11-06
 
 Première version (SDL-FM 1.6.0, premier challenge Guru avec le fichier Figma).

@@ -21,3 +21,4 @@
 /playwright-report
 # Maquettes premium : le .fig, l'aperçu, les rendus et les références ne quittent pas ce poste (règle FM)
 /design/
+__pycache__/

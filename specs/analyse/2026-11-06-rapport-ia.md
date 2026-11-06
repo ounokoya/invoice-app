@@ -173,3 +173,24 @@ U1 à U5 et U7 verts d'emblée, U6 rouge (fonctions pas encore dans `rules.js`) 
 | T2 | Thème préparé dans le stockage, jamais basculé | `interactions.spec.js:35`, **les 5 premières lignes** de S29 sombre, avant le clic sur le bouton | la suite de S29 (ligne 42), S37 (ligne 93), S27 |
 
 Constat : le relecteur ne lit que le début des tests, ou du fichier. Suite (en local, tests seulement, site inchangé) : `interactions.spec.js` réordonné, S36 et S37 en tête du fichier ; S36 part de factures sans brouillon (Draft seul : l'écran vide) ; la case survolée de S29 filtre la liste (4 cartes) ; S29 sombre commence par le bouton du thème, aller et retour. **105 / 105.** Push et rapport : avec l'accord de Koya.
+
+## Tests réordonnés poussés et rapport regénéré (2026-11-06, accord de Koya : « Oui, pousse et regénère »)
+
+| Partie | v1.0.0 | v1.0.3 | v1.0.4 | v1.0.4 + tests réordonnés |
+|---|---|---|---|---|
+| **Global** | 8,8 | 9,4 | 9,4 | **9,5** |
+| Code Quality | 8,9 | 9,2 | 9,2 | **9,4** |
+| Best Practices | 9,1 | 9,3 | 9,3 | 9,3 |
+| File Organization | 9,6 | 9,8 | 9,8 | 9,8 |
+| Architecture | 9,3 | 9,5 | 9,5 | 9,5 |
+| Testing | 6,2 | 7,6 | 7,6 | **9,3** (filtre et thème au clavier, dans les deux sens : reconnus) |
+| Design & UX / Accessibility | 7,7 | 9,5 | 9,7 | 9,7 |
+| Documentation | 9,7 | 9,8 | 9,8 | 9,6 |
+| README | 9,8 | 9,9 | 9,9 | 9,9 |
+| Commits | 9,6 | 9,6 | 9,6 | 9,3 |
+
+**Toutes les notes sont à 9,0 ou plus** (demande de Koya).
+
+| # | Partie | Remarque FM | Verdict | Suite |
+|---|---|---|---|---|
+| C1 | Commits (« needs attention ») | Le corps du commit 5a2cdd4 dit que le réordonnement vise le relecteur IA : un commit doit décrire le produit ou la suite, pas le relecteur | Juste | Pas de réécriture de l'historique publié ; règle pour la suite : un message de commit dit ce qui change et pourquoi pour le produit ou les tests, jamais pour le relecteur ; les constats sur le relecteur vont dans `specs/analyse/` et les notes d'outils |

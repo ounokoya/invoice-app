@@ -113,3 +113,13 @@ Parcours réel (1440 px) : `[null]` gardé → les 7 factures ; Tab jusqu'à « 
 Profil FM : toujours 375 / 400 points.
 
 Proposition : v1.0.3 avec P1 (en partie) et P5, avec l'accord de Koya ; ou s'arrêter là (9,3) et passer au Guru 2.
+
+## v1.0.3 en local (2026-11-06, accord de Koya : « Oui, corrige »)
+
+| # | Fait | Test |
+|---|---|---|
+| P5 | `tabindex="-1"` retiré du champ en lecture seule ; contour de 2 px au focus (le style « texte » n'a pas de bordure) | S18 : Tab après Price → Total (rouge avant) ; S31 vérifie son contour |
+| P1 | Dates `AAAA-MM-JJ` (D10 compris, normalisée au chargement), termes 1, 7, 14, 30, montants ≥ 0 ; totaux recalculés depuis les lignes ; une facture sans ligne reste permise (brouillon) | S26 : quantité négative, date 18/08/2021, terme 5 → `data.json` ; total faux → recalculé ; AA1449 (`2021-10-7`) acceptée (rouge avant) |
+| — | Trouvé en préparant P1 : un brouillon à date vidée faisait échouer l'enregistrement (`addDays('')`), et une Qty. négative aurait rendu les données gardées refusées au rechargement | S16 : date du jour, Qty. à 0, relu après rechargement (rouge avant) |
+
+Parcours réel (1440 px) : dans « Edit #XM9141 », Tab après Price → Total « 156.00 » focalisé, contour visible. **96 / 96** (une erreur réseau `ERR_NETWORK_CHANGED` au premier passage, verte au second). Publication puis rapport : chacun avec l'accord de Koya.

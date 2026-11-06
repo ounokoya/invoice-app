@@ -1,7 +1,12 @@
 """Rend des écrans d'un .fig décodé (message.json de kiwi_fig.py) en SVG : tracés précalculés par Figma
 (formes, contours, lettres), couleurs, opacités, ombres portées, découpe des cadres, images.
-Usage : python3 -I fig_render.py <message.json> <dossier images> <dossier sortie> [motif de nom d'écran]"""
-import base64, collections, json, re, struct, sys, html
+Usage : python3 -I fig_render.py <message.json> <dossier images> <dossier sortie> [motif de nom d'écran] [--aa]
+--aa : teintes AA validées (scripts/fig/aa.py)."""
+import base64, collections, json, os, re, struct, sys, html
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from aa import remap
+AA = '--aa' in sys.argv
+sys.argv = [a for a in sys.argv if a != '--aa']
 
 msg = json.load(open(sys.argv[1])); IMG = sys.argv[2]; OUT = sys.argv[3]
 pattern = re.compile(sys.argv[4] if len(sys.argv) > 4 else '.')
@@ -31,8 +36,13 @@ def path(blob_index, scale=1.0, flip=False, dx=0.0, dy=0.0):
         else: break
     return ' '.join(d)
 
+CTX = {'node': {}, 'dark': False, 'frame': ''}
 def rgba(c, op=1.0):
-    return f"rgba({round(c['r']*255)},{round(c['g']*255)},{round(c['b']*255)},{c.get('a',1)*op:.4f})"
+    r, g, b = round(c['r'] * 255), round(c['g'] * 255), round(c['b'] * 255)
+    if AA:
+        h = remap('#%02x%02x%02x' % (r, g, b), CTX['node'], CTX['dark'], CTX['frame'])
+        r, g, b = int(h[1:3], 16), int(h[3:5], 16), int(h[5:7], 16)
+    return f"rgba({r},{g},{b},{c.get('a',1)*op:.4f})"
 
 defs = []; uid = [0]
 def new_id(p): uid[0] += 1; return f"{p}{uid[0]}"
@@ -81,6 +91,7 @@ def shadow(effects):
 
 def render(node, top=False):
     if not node.get('visible', True): return ''
+    CTX['node'] = node
     t = node.get('transform', {}); out = []
     m = (1, 0, 0, 1, 0, 0) if top else (t.get('m00', 1), t.get('m10', 0), t.get('m01', 0), t.get('m11', 1), t.get('m02', 0), t.get('m12', 0))
     op = node.get('opacity', 1)
@@ -121,7 +132,7 @@ def render(node, top=False):
 
 frames = [n for n in nodes if n.get('type') == 'FRAME' and n.get('parentIndex') and by.get(gid(n['parentIndex']['guid']), {}).get('type') == 'CANVAS' and pattern.search(n.get('name', ''))]
 for f in frames:
-    defs.clear()
+    defs.clear(); CTX['dark'] = '[Dark]' in f['name']; CTX['frame'] = f['name']
     body = render(f, top=True)
     w, h = f['size']['x'], f['size']['y']
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:g}" height="{h:g}" viewBox="0 0 {w:g} {h:g}"><defs>{"".join(defs)}</defs>{body}</svg>'

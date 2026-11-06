@@ -137,12 +137,13 @@
   @reference "../app.css";
 
   .drawer {
-    @apply fixed start-0 top-18 m-0 h-[calc(100dvh-4.5rem)] max-h-none w-full max-w-none bg-surface p-0 md:top-20 md:h-[calc(100dvh-5rem)] md:w-[38.5rem] md:rounded-e-bar lg:top-0 lg:h-dvh lg:w-[44.9375rem];
+    @apply fixed start-0 top-18 m-0 h-[calc(100dvh-4.5rem)] max-h-none w-full max-w-none overflow-hidden bg-surface p-0 md:top-20 md:h-[calc(100dvh-5rem)] md:w-[38.5rem] md:rounded-e-bar lg:top-0 lg:h-dvh lg:w-[44.9375rem];
   }
 
   .drawer::backdrop { @apply bg-scrim; }
 
-  .scroller { @apply h-full overflow-y-auto; }
+  /* bloc de référence des libellés sr-only : ils défilent avec le formulaire */
+  .scroller { @apply relative h-full overflow-y-auto; }
 
   form { @apply px-6 pt-[2.0625rem] md:ps-14 md:pe-14 md:pt-[3.6875rem] lg:ps-[9.9375rem]; }
 

@@ -1,0 +1,251 @@
+/* League Spartan servie avec le site, sous-ensemble latin (ADR-0005) */
+@import "@fontsource/league-spartan/latin-500.css";
+@import "@fontsource/league-spartan/latin-600.css";
+@import "@fontsource/league-spartan/latin-700.css";
+@import "tailwindcss";
+
+/* Le thème suit l'attribut posé sur <html> (ADR-0004) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Tokens du .fig (specs/reference/tokens.md) et teintes AA validées (G2, G3 ; scripts/fig/aa.py) */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-violet: #7757fa;
+  --color-violet-hover: #6742ff;
+  --color-violet-light: #9277ff;
+  --color-red: #e62525;
+  --color-red-hover: #c41e1e;
+  --color-bar-light: #373b53;
+  --color-night: #1e2139;
+  --color-night-2: #252945;
+  --color-ink-dark: #0c0e16;
+  --color-lavender: #dfe3fa;
+  --color-divider: #494e6e;
+
+  /* rôles : valeurs du thème clair, redéfinies pour le sombre plus bas */
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-bar: var(--bar);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-label: var(--label);
+  --color-client: var(--client);
+  --color-hash: var(--hash);
+  --color-heading-violet: var(--heading-violet);
+  --color-field: var(--field);
+  --color-field-border: var(--field-border);
+  --color-band: var(--band);
+  --color-paid: var(--paid);
+  --color-pending: var(--pending);
+  --color-draft: var(--draft);
+  --color-btn3: var(--btn3);
+  --color-btn3-hover: var(--btn3-hover);
+  --color-btn3-text: var(--btn3-text);
+  --color-btn3-text-hover: var(--btn3-text-hover);
+  --color-btn4-hover: var(--btn4-hover);
+  --color-btn4-text: var(--btn4-text);
+  --color-btn6-hover: var(--btn6-hover);
+  --color-error: var(--error);
+  --color-item-heading: var(--item-title);
+  --color-focus: var(--focus);
+
+  --font-sans: "League Spartan", sans-serif;
+
+  --text-heading-l: 2.25rem;
+  --text-heading-l--line-height: 2.0625rem;
+  --text-heading-l--letter-spacing: -0.0703rem;
+  --text-heading-m: 1.5rem;
+  --text-heading-m--line-height: 2rem;
+  --text-heading-m--letter-spacing: -0.0313rem;
+  --text-heading-mobile: 1.5rem;
+  --text-heading-mobile--line-height: 1.375rem;
+  --text-heading-mobile--letter-spacing: -0.0469rem;
+  --text-heading-s: 0.9375rem;
+  --text-heading-s--line-height: 0.9375rem;
+  --text-heading-s--letter-spacing: -0.0156rem;
+  --text-heading-s-tall: 0.9375rem;
+  --text-heading-s-tall--line-height: 1.5rem;
+  --text-heading-s-tall--letter-spacing: -0.0156rem;
+  --text-value: 0.9375rem;
+  --text-value--line-height: 1.25rem;
+  --text-value--letter-spacing: -0.0156rem;
+  --text-body: 0.8125rem;
+  --text-body--line-height: 0.9375rem;
+  --text-body--letter-spacing: -0.0063rem;
+  --text-body-tall: 0.8125rem;
+  --text-body-tall--line-height: 1.125rem;
+  --text-body-tall--letter-spacing: -0.0063rem;
+  --text-body-wide: 0.8125rem;
+  --text-body-wide--line-height: 1.375rem;
+  --text-body-wide--letter-spacing: -0.0063rem;
+  --text-item-title: 1.125rem;
+  --text-item-title--line-height: 2rem;
+  --text-item-title--letter-spacing: -0.0234rem;
+  --text-tiny: 0.625rem;
+  --text-tiny--line-height: 0.9375rem;
+  --text-tiny--letter-spacing: -0.0131rem;
+
+  --radius-card: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-badge: 0.375rem;
+  --radius-bar: 1.25rem;
+
+  --shadow-card: 0 0.625rem 0.625rem -0.625rem rgb(72 84 159 / 0.1);
+  --shadow-menu: 0 0.625rem 1.25rem rgb(72 84 159 / 0.25);
+}
+
+:root {
+  --page: #f8f8fb;
+  --surface: #ffffff;
+  --surface-2: #f9fafe;
+  --bar: #373b53;
+  --ink: #0c0e16;
+  --muted: #68709b;
+  --label: #616db5;
+  --client: #6870a0;
+  --hash: #616db5;
+  --heading-violet: #7757fa;
+  --field: #ffffff;
+  --field-border: #dfe3fa;
+  --band: #373b53;
+  --paid: #1a8360;
+  --pending: #ab6000;
+  --draft: #373b53;
+  --btn3: #f9fafe;
+  --btn3-hover: #dfe3fa;
+  --btn3-text: #616db5;
+  --btn3-text-hover: #515eae;
+  --btn4-hover: #0c0e16;
+  --btn4-text: #a0a5c0;
+  --btn6-hover: #dfe3fa;
+  --error: #e62525;
+  --item-title: #6d7690;
+  --focus: #7757fa;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --page: #141625;
+  --surface: #1e2139;
+  --surface-2: #252945;
+  --bar: #1e2139;
+  --ink: #ffffff;
+  --muted: #dfe3fa;
+  --label: #dfe3fa;
+  --client: #ffffff;
+  --hash: #8690c7;
+  --heading-violet: #9277ff;
+  --field: #1e2139;
+  --field-border: #252945;
+  --band: #0c0e16;
+  --paid: #33d69f;
+  --pending: #ff8f00;
+  --draft: #dfe3fa;
+  --btn3: #252945;
+  --btn3-hover: #ffffff;
+  --btn3-text: #dfe3fa;
+  --btn3-text-hover: #616db5;
+  --btn4-hover: #1e2139;
+  --btn4-text: #dfe3fa;
+  --btn6-hover: #1e2139;
+  --error: #ec5757;
+  --item-title: #8c92b3;
+  --focus: #9277ff;
+  color-scheme: dark;
+}
+
+/* voile des dialogues : valeur écrite dans la règle produite (::backdrop) */
+@theme inline {
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+@layer base {
+  html {
+    background-color: var(--page);
+  }
+
+  body {
+    @apply bg-page font-sans text-ink antialiased;
+  }
+
+  /* focus clavier : contour de 2 px décalé de 2 px (G3-3, Q-B15) */
+  :focus-visible {
+    outline: 0.125rem solid var(--focus);
+    outline-offset: 0.125rem;
+  }
+
+  input:focus-visible,
+  select:focus-visible {
+    outline: none;
+    border-color: var(--color-violet-light);
+  }
+}
+
+/* composants réutilisés (utilitaires Tailwind : utilisables dans le balisage et avec @apply) */
+@utility btn {
+  @apply inline-flex h-12 shrink-0 cursor-pointer items-center justify-center rounded-full px-6 text-heading-s font-bold;
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+}
+
+@utility btn-primary {
+  @apply btn bg-violet text-white hover:bg-violet-hover;
+}
+
+@utility btn-light {
+  @apply btn bg-btn3 text-btn3-text hover:bg-btn3-hover hover:text-btn3-text-hover;
+}
+
+@utility btn-dark {
+  @apply btn bg-bar-light text-btn4-text hover:bg-btn4-hover;
+}
+
+@utility btn-danger {
+  @apply btn bg-red text-white hover:bg-red-hover;
+}
+
+@utility field {
+  @apply h-12 w-full rounded-field border border-field-border bg-field px-5 text-heading-s font-bold text-ink;
+  transition-property: border-color;
+  transition-duration: 150ms;
+
+  &:hover {
+    border-color: var(--color-violet-light);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--error);
+  }
+}
+
+@utility badge {
+  @apply relative inline-flex h-10 w-26 shrink-0 items-center justify-center gap-2 rounded-badge text-heading-s font-bold;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0.0571;
+  }
+
+  &::after {
+    content: "";
+    order: -1;
+    inline-size: calc(var(--spacing) * 2);
+    block-size: calc(var(--spacing) * 2);
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition: none !important;
+  }
+}

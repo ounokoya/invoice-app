@@ -1,74 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Invoice app</title>
-</head>
-<body>
-  Invoices
-  There are <!-- Add number here --> total invoices
-
-  Filter by status
-  Draft
-  Pending
-  Paid
-  
-  New Invoice
-
-  <!-- No invoices -->
-  There is nothing here
-  Create an invoice by clicking the New Invoice button and get started
-  <!-- No invoices end -->
-
-  <!-- Create new invoice form -->
-  Go back
-
-  New Invoice
-  
-  Bill From
-  
-  Street Address
-  City
-  Post Code
-  Country
-  
-  Bill To
-  
-  Client's Name
-  Client's Email
-  e.g. email@example.com
-  Street Address
-  City
-  Post Code
-  Country
-  
-  Invoice Date
-  
-  Payment Terms
-  Net 1 day
-  Net 7 days
-  Net 14 days
-  Net 30 days
-  
-  Project Description
-  e.g. Graphic Design Service
-  
-  Item List
-  
-  Item Name
-  Qty.
-  Price
-  Total
-  
-  Add New Item
-  
-  Discard
-  Save as Draft
-  Save & Send
-  <!-- Create new invoice end -->
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+    <title>Frontend Mentor | Invoice app</title>
+    <meta name="description" content="Invoice app: create, edit, filter and pay invoices, in light or dark theme.">
+    <!-- thème posé avant le premier affichage : choix gardé, sinon celui de l'appareil (ADR-0004) -->
+    <script>
+      try {
+        const saved = localStorage.getItem('invoice-app/theme')
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      } catch {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>This invoice app needs JavaScript.</noscript>
+  </body>
 </html>

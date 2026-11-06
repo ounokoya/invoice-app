@@ -43,4 +43,8 @@ Deux faux positifs (R1, R2) : comme pour REST Countries, le relecteur ne lit qu'
 | R9 | `@theme static { --breakpoint-md }` ; `@variant md` dans les composants ; `media.svelte.js` lit le token | S1 à S6, S34 |
 | R10 | Ligne « Repository » ; table « parcours → scénarios → fichier » (pour R1 et R2) | — |
 
-Parcours réel au clavier (1440 px) : Entrée sur une carte → focus sur le contenu, « Invoice #RT3080 » annoncé ; Tab → « Go back » ; Entrée → focus sur la carte RT3080, « Invoices » annoncé. Le contour du `main` focalisé entourait toute la page : retiré (élément ni interactif ni dans l'ordre du Tab). **96 / 96**. Publication puis « Regenerate report » : chacun avec l'accord de Koya.
+Parcours réel au clavier (1440 px) : Entrée sur une carte → focus sur le contenu, « Invoice #RT3080 » annoncé ; Tab → « Go back » ; Entrée → focus sur la carte RT3080, « Invoices » annoncé. Le contour du `main` focalisé entourait toute la page : retiré (élément ni interactif ni dans l'ordre du Tab). **96 / 96**.
+
+## v1.0.1 publiée (2026-11-06, accord de Koya : « Oui, publie »)
+
+`main` et `v1.0.1` poussés, `gh-pages` publié ; `BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test --workers=2` : **96 réussis sur 96**. « Regenerate report » : avec l'accord de Koya.

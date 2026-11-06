@@ -2,6 +2,15 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.3] — 2026-11-06
+
+Suite du rapport regénéré sur la v1.0.2 (9,3 / 10, remarques P1 en partie et P5), avec l'accord de Koya.
+
+### Fixed
+- Le Total de chaque ligne, en lecture seule, reste dans l'ordre du Tab, avec un contour de focus visible (A7, S18 ; P5).
+- Factures gardées : dates `AAAA-MM-JJ` (D10 compris), termes 1, 7, 14 ou 30, montants positifs ou nuls ; totaux recalculés depuis les lignes (D2, S26 ; P1).
+- Un brouillon à date vidée ou à Qty. négative s'enregistre (date du jour, 0) au lieu d'échouer ; trouvé en préparant P1 (S16).
+
 ## [1.0.2] — 2026-11-06
 
 Suite du rapport regénéré sur la v1.0.1 (9,0 / 10, remarques N1 et N6), avec l'accord de Koya.

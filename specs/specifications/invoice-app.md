@@ -1,8 +1,9 @@
-# Spec — Invoice app (v1.0.1)
+# Spec — Invoice app (v1.0.2)
 
 > SDL-FM 1.6.0 Phase 4. Sources : analyse validée (G2) `specs/visuel/invoice-app-analyse.md`, maquette validée (G3) `specs/visuel/penpot/maquette.md`, tokens `specs/reference/tokens.md`, README du starter (comportements attendus), décisions dans `specs/brainstorming/2026-11-06-invoice-app.md`.
 > Cette spec dit **quoi** et **pourquoi**, jamais **comment**.
 > v1.0.1 (2026-11-06, accord de Koya) : remarques R3 à R6 du rapport IA FM (`specs/analyse/2026-11-06-rapport-ia.md`) : A3 complété, A9 et A10 ajoutés, S14, S24 et S27 étendus, S35 ajouté.
+> v1.0.2 (2026-11-06, accord de Koya) : remarques N1 et N6 du rapport regénéré : D2 complété, A11 ajouté, S23 et S26 étendus.
 
 ## 1. Objectif
 
@@ -13,7 +14,7 @@ Une application de factures : les voir, les filtrer par statut, les créer (brou
 | # | Règle | Origine |
 |---|---|---|
 | D1 | Une facture : `id`, `createdAt`, `paymentDue`, `description`, `paymentTerms` (1, 7, 14 ou 30), `clientName`, `clientEmail`, `status` (`draft`, `pending`, `paid`), `senderAddress` et `clientAddress` (`street`, `city`, `postCode`, `country`), `items` (`name`, `quantity`, `price`, `total`), `total` | `data.json` |
-| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier | P1, Q-B13 |
+| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier ; un tableau gardé illisible, ou dont une facture n'a pas la forme de D1, est ignoré : `data.json` est relu | P1, Q-B13, N1 |
 | D3 | `id` d'une nouvelle facture : 2 lettres majuscules puis 4 chiffres, différent des `id` existants | README |
 | D4 | `paymentDue` = `createdAt` + `paymentTerms` jours | README |
 | D5 | `total` d'une ligne = `quantity` × `price` ; `total` de la facture = somme des lignes | README, Q-B14 |
@@ -143,6 +144,7 @@ Les changements de couleur peuvent être progressifs ; aucune transition si `pre
 | A8 | Pas de transition si `prefers-reduced-motion: reduce` |
 | A9 | Changement de vue (pas au premier chargement) : le focus va au contenu principal, ou, au retour à la liste, à la carte de la facture quittée ; le titre de la vue est annoncé (région de statut) |
 | A10 | Un dialogue fermé rend le focus au bouton qui l'a ouvert |
+| A11 | Après « Mark as Paid » (le bouton disparaît), le nouveau statut est annoncé et le focus va à « Edit » |
 
 ### Noms accessibles utilisés par les tests
 
@@ -197,14 +199,16 @@ S20 Given la facture XM9141   When « Edit »   Then dialogue « Edit #XM9141 »
 S21 Given Edit   When je change le client et une ligne puis « Save Changes »   Then la facture affichée et la carte de la liste suivent ;
                  When je vide un champ   Then « can't be empty » et rien n'est gardé ; When « Cancel »   Then aucun changement
 S22 Given le brouillon FV2353   When je le complète puis « Save Changes »   Then statut pending
-S23 Given XM9141 pending   When « Mark as Paid »   Then badge Paid, bouton absent, carte de la liste Paid
+S23 Given XM9141 pending   When « Mark as Paid »   Then badge Paid, bouton absent, « Invoice #XM9141 marked as paid » annoncé,
+                           focus sur « Edit » ; carte de la liste Paid
 S24 Given une facture   When « Delete »   Then dialogue d'alerte « Confirm Deletion » avec son id ; When « Cancel » ou Échap   Then elle reste,
                         le focus revient à « Delete » ;
                         When « Delete »   Then la liste sans elle, compteur à 6
 
 Persistance et thème
 S25 Given une création, une modification, un paiement, une suppression   When je recharge   Then chaque changement est retrouvé
-S26 Given le navigateur vidé de ses données   When je recharge   Then les 7 factures de data.json
+S26 Given le navigateur vidé de ses données, ou des données gardées sans la forme de D1 ([null], facture sans lignes)   When je recharge
+    Then les 7 factures de data.json
 S27 Given l'appareil en thème sombre, premier passage   Then le thème sombre ; When je clique le bouton du thème   Then le clair,
                                                          gardé au rechargement ; When je clique de nouveau   Then le sombre, gardé
 S28 Given chaque thème   Then fonds, textes et badges de la §4

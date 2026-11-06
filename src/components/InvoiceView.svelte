@@ -14,6 +14,7 @@
   let deleter = $state()
   let form = $state()
   let editButton = $state()
+  let deleteButton = $state()
 
   function confirmDelete() {
     remove(id)
@@ -30,7 +31,7 @@
       <StatusBadge status={invoice.status} />
       <div class="actions">
         <button class="btn-light" type="button" bind:this={editButton} onclick={() => form.open(invoice)}>Edit</button>
-        <button class="btn-danger delete" type="button" onclick={() => deleter.open()}>Delete</button>
+        <button class="btn-danger delete" type="button" bind:this={deleteButton} onclick={() => deleter.open()}>Delete</button>
         {#if invoice.status === 'pending'}
           <button class="btn-primary paid" type="button" onclick={() => markPaid(id)}>Mark as Paid</button>
         {/if}
@@ -98,7 +99,7 @@
       </div>
     </article>
 
-    <DeleteDialog bind:this={deleter} {id} onconfirm={confirmDelete} />
+    <DeleteDialog bind:this={deleter} {id} onconfirm={confirmDelete} returnFocus={() => deleteButton} />
     <InvoiceForm bind:this={form} returnFocus={() => editButton} />
   {:else}
     <h1 class="missing">Invoice not found</h1>

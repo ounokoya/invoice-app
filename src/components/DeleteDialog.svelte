@@ -1,6 +1,6 @@
 <script>
   // Confirmation de suppression (spec §3.5, ADR-0008) : dialogue modal d'alerte
-  let { id, onconfirm } = $props()
+  let { id, onconfirm, returnFocus = () => null } = $props()
   let dialog = $state()
 
   export function open() {
@@ -8,7 +8,7 @@
   }
 </script>
 
-<dialog class="alert" role="alertdialog" aria-labelledby="delete-title" aria-describedby="delete-text" bind:this={dialog}>
+<dialog class="alert" role="alertdialog" aria-labelledby="delete-title" aria-describedby="delete-text" bind:this={dialog} onclose={() => returnFocus()?.focus()}>
   <h2 id="delete-title" class="title">Confirm Deletion</h2>
   <p id="delete-text" class="text">Are you sure you want to delete invoice #{id}? This action cannot be undone.</p>
   <div class="actions">

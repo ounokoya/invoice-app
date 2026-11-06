@@ -162,3 +162,14 @@ Testing 7,6 vient de remarques fausses répétées : le relecteur lit une partie
 | `isInvoice` et `normalizeInvoice` dans `rules.js` ; dates impossibles refusées | Rendre la vérification testable sans navigateur ; résumé Best Practices du rapport sur la v1.0.3 |
 
 U1 à U5 et U7 verts d'emblée, U6 rouge (fonctions pas encore dans `rules.js`) ; S29, S36, S37 verts d'emblée (gardes). **105 / 105** (7 unitaires, 98 Playwright). Publication puis rapport : chacun avec l'accord de Koya.
+
+## v1.0.4 publiée et rapport regénéré (2026-11-06, accord de Koya : « Oui, publie et regénère »)
+
+`main`, `v1.0.4`, `gh-pages` ; en ligne : 97 / 98 puis S33 vert au second passage (`ECONNRESET` en lisant le HTML servi), soit **98 / 98**. Rapport : **9,4 / 10** ; Design & UX 9,7 (Accessibility 9,7), Best Practices 9,3, Architecture 9,5, Documentation 9,8 ; **Testing 7,6 inchangé**, deux remarques mot pour mot :
+
+| # | Remarque | Ce que le relecteur cite | Ce qu'il ne voit pas |
+|---|---|---|---|
+| T1 | Filtre seulement ouvert et survolé | `interactions.spec.js:18`, 4 lignes du survol | S36 (ligne 58), S8, S9, S11 |
+| T2 | Thème préparé dans le stockage, jamais basculé | `interactions.spec.js:35`, **les 5 premières lignes** de S29 sombre, avant le clic sur le bouton | la suite de S29 (ligne 42), S37 (ligne 93), S27 |
+
+Constat : le relecteur ne lit que le début des tests, ou du fichier. Suite (en local, tests seulement, site inchangé) : `interactions.spec.js` réordonné, S36 et S37 en tête du fichier ; S36 part de factures sans brouillon (Draft seul : l'écran vide) ; la case survolée de S29 filtre la liste (4 cartes) ; S29 sombre commence par le bouton du thème, aller et retour. **105 / 105.** Push et rapport : avec l'accord de Koya.

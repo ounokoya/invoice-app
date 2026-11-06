@@ -1,10 +1,11 @@
-# Spec — Invoice app (v1.0.3)
+# Spec — Invoice app (v1.0.4)
 
 > SDL-FM 1.6.0 Phase 4. Sources : analyse validée (G2) `specs/visuel/invoice-app-analyse.md`, maquette validée (G3) `specs/visuel/penpot/maquette.md`, tokens `specs/reference/tokens.md`, README du starter (comportements attendus), décisions dans `specs/brainstorming/2026-11-06-invoice-app.md`.
 > Cette spec dit **quoi** et **pourquoi**, jamais **comment**.
 > v1.0.1 (2026-11-06, accord de Koya) : remarques R3 à R6 du rapport IA FM (`specs/analyse/2026-11-06-rapport-ia.md`) : A3 complété, A9 et A10 ajoutés, S14, S24 et S27 étendus, S35 ajouté.
 > v1.0.2 (2026-11-06, accord de Koya) : remarques N1 et N6 du rapport regénéré : D2 complété, A11 ajouté, S23 et S26 étendus.
 > v1.0.3 (2026-11-06, accord de Koya) : remarques P1 (en partie) et P5 du rapport regénéré : D2 et A7 précisés, S16, S18 et S26 étendus.
+> v1.0.4 (2026-11-06, demande de Koya : toutes les notes du rapport IA à 9,0 au moins, Testing 7,6) : D2 précisé (dates réelles), S29 passe au sombre par le bouton, S36 et S37 (clavier) ajoutés, règles U1 à U7 testées sans navigateur.
 
 ## 1. Objectif
 
@@ -15,7 +16,7 @@ Une application de factures : les voir, les filtrer par statut, les créer (brou
 | # | Règle | Origine |
 |---|---|---|
 | D1 | Une facture : `id`, `createdAt`, `paymentDue`, `description`, `paymentTerms` (1, 7, 14 ou 30), `clientName`, `clientEmail`, `status` (`draft`, `pending`, `paid`), `senderAddress` et `clientAddress` (`street`, `city`, `postCode`, `country`), `items` (`name`, `quantity`, `price`, `total`), `total` | `data.json` |
-| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier ; un tableau gardé illisible, ou dont une facture n'a pas la forme de D1, est ignoré : `data.json` est relu (dates `AAAA-MM-JJ`, D10 compris ; termes 1, 7, 14 ou 30 ; quantités et prix positifs ou nuls ; un brouillon peut n'avoir aucune ligne) ; les totaux d'une facture gardée sont recalculés depuis ses lignes | P1, Q-B13, N1 |
+| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier ; un tableau gardé illisible, ou dont une facture n'a pas la forme de D1, est ignoré : `data.json` est relu (dates `AAAA-MM-JJ` qui existent au calendrier, D10 compris ; termes 1, 7, 14 ou 30 ; quantités et prix positifs ou nuls ; un brouillon peut n'avoir aucune ligne) ; les totaux d'une facture gardée sont recalculés depuis ses lignes | P1, Q-B13, N1 |
 | D3 | `id` d'une nouvelle facture : 2 lettres majuscules puis 4 chiffres, différent des `id` existants | README |
 | D4 | `paymentDue` = `createdAt` + `paymentTerms` jours | README |
 | D5 | `total` d'une ligne = `quantity` × `price` ; `total` de la facture = somme des lignes | README, Q-B14 |
@@ -217,6 +218,7 @@ S28 Given chaque thème   Then fonds, textes et badges de la §4
 
 Interactions et accessibilité
 S29 Given chaque type de bouton, la carte, la case, le champ   When survol   Then l'état de la §6 ; When je le quitte   Then l'état normal
+    (en sombre : le thème est choisi par le bouton, pas préparé dans le stockage)
 S30 Given prefers-reduced-motion: reduce   Then aucune transition
 S31 Given la liste, la facture, le formulaire, la suppression   When je parcours au Tab jusqu'au dernier élément   Then chaque élément
                                                                     focalisé a un contour visible ; dans un dialogue, le focus reste dedans
@@ -231,4 +233,21 @@ S34 Given les 21 écrans de G3-5   Then chaque capture vs design/reference-aa/<�
 Navigation (v1.0.1, A9)
 S35 Given la liste   When j'ouvre RT2080   Then le focus est sur le contenu principal, « Invoice #RT2080 » est annoncé, Tab mène à « Go back » ;
                      When « Go back »   Then le focus est sur la carte RT2080 et « Invoices » est annoncé
+
+Clavier (v1.0.4)
+S36 Given la liste   When j'ouvre le filtre au clavier (Entrée), coche Draft, puis Pending, puis Paid à l'Espace, puis ne garde que Paid
+                     Then à chaque pas les cartes, le compteur et l'adresse suivent (1, 5, 7 puis 2 cartes) ; Échap ferme et rend le focus au bouton
+S37 Given le thème clair   When Entrée sur le bouton du thème   Then le sombre (fond, `data-theme`, nom « Switch to light theme », choix gardé) ;
+                           When Entrée de nouveau   Then le clair
+```
+
+Règles sans navigateur (v1.0.4, `node --test tests/unit/`)
+U1 D3 : `newId` donne 2 lettres et 4 chiffres, jamais un id déjà pris
+U2 D5 : totaux de ligne et de facture arrondis au centime (0,1 × 3 = 0,30)
+U3 D6, D7 : `validate` donne chaque message de la §3.4 et les deux messages du bas ; une facture complète est valide
+U4 D10, D4 : `normalizeDate` (« 2021-10-7 ») ; `addDays` passe les fins de mois et d'année (Net 1, 7, 14, 30)
+U5 S16 : `toInvoice` nettoie les textes, prend la date du jour si elle est vide, ramène les montants négatifs à 0, calcule échéance et totaux
+U6 D2 : `isInvoice` accepte les 7 factures de `data.json` et refuse chaque défaut (forme, statut, terme, date impossible, montant négatif) ;
+   `normalizeInvoice` corrige les dates de D10 et recalcule les totaux
+U7 §2 formats : « 19 Aug 2021 », « £ 1,800.90 », « 1800.90 », « Pending »
 ```

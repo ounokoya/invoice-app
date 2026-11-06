@@ -4,11 +4,11 @@
 
 ## 1. Tests automatiques (Phase 7)
 
-`npm test` : **94 réussis sur 94** (1,1 min).
+`npm test` : **95 réussis sur 95** (1,2 min), dont le test de garde des écarts E1 et E2 ajouté après le parcours réel.
 
 | Groupe | Scénarios | Résultat |
 |---|---|---|
-| Mise en page | S1 à S6 : positions du `.fig` à 1 px près (2 px pour les textes) à 1440, 768 et 375 ; tiroir, modale ; 320 à 1440 sans défilement horizontal | ✅ 12 / 12 |
+| Mise en page | S1 à S6 : positions du `.fig` à 1 px près (2 px pour les textes) à 1440, 768 et 375 ; tiroir, modale ; 320 à 1440 sans défilement horizontal ; garde E1 et E2 (fenêtre de 900 px : le dialogue ne défile pas, ombre du pied) | ✅ 13 / 13 |
 | Liste et filtre | S7 à S9 : ordre de `data.json`, chaque combinaison du filtre, compteur, adresse, écran vide | ✅ 3 / 3 |
 | Facture | S10 à S12 : chaque facture champ par champ, « Go back » avec le filtre, id inconnu, Mark as Paid | ✅ 3 / 3 |
 | Formulaire | S13 à S19 : vide, erreurs de chaque champ, création complète, brouillon, e-mail et quantité, lignes, Discard et Échap | ✅ 7 / 7 |
@@ -64,7 +64,7 @@ Le reste des écarts : lissage des lettres (contours de Figma contre rendu de Ch
 
 | # | Écart | Suite |
 |---|---|---|
-| E1 | Deux barres de défilement dans le tiroir : les libellés `sr-only` des lignes (position absolue) prenaient le `<dialog>` fixe comme bloc de référence et le faisaient défiler — **invisible aux tests**, dont la fenêtre montrait tout le formulaire | Corrigé : `relative` sur la zone qui défile, `overflow-hidden` sur le dialogue |
+| E1 | Deux barres de défilement dans le tiroir : les libellés `sr-only` des lignes (position absolue) prenaient le `<dialog>` fixe comme bloc de référence et le faisaient défiler — **invisible aux tests**, dont la fenêtre montrait tout le formulaire | Corrigé : `relative` sur la zone qui défile, `overflow-hidden` sur le dialogue ; test de garde (rouge sur l'ancien tiroir : 274 px de débordement) |
 | E2 | Les écrans « With Scroll » de la maquette ont une ombre au-dessus du pied (200 px vers 50 % de noir en desktop et tablette, 64 px vers 10 % en mobile) et une barre de défilement fine (8 px, à 32 px du bord, 8 px en mobile) ; mes références ne les montraient pas : `fig_render.py` remplace un dégradé par sa première couleur, transparente ici | Ajoutés : ombre visible tant qu'il reste du formulaire sous le pied (toujours en mobile, comme la maquette), barre fine dans une gouttière gardée ; Firefox garde une barre native fine |
 | — | Dans le panneau du navigateur intégré, l'ombre n'apparaît qu'à la prochaine image dessinée : la page y tourne en arrière-plan et `ResizeObserver` attend un rendu | Sans effet sur un navigateur affiché ; vérifié au défilement et dans les tests |
 | — | La date du formulaire suit le format du navigateur (`06/11/2026` en français) | Accepté : contrôle natif (Q-B3, ADR-0008) |

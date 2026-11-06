@@ -66,6 +66,19 @@ for (const [w, f] of Object.entries(FORM)) {
   })
 }
 
+// Rapport d'exécution, E1 et E2 : écarts trouvés au parcours réel, avec une fenêtre plus petite que le formulaire
+test('E1, E2 — 1440 × 900 : le tiroir défile une seule fois ; ombre au-dessus du pied tant qu\'il reste du formulaire', async ({ page }) => {
+  await open(page, 1440, 900)
+  await newButton(page).click()
+  const d = dialog(page, 'New Invoice')
+  await expect(d).toBeVisible()
+  expect(await d.evaluate((el) => el.scrollHeight - el.clientHeight), 'le dialogue lui-même ne défile pas').toBe(0)
+  const shade = d.locator('.shade')
+  await expect(shade).toHaveCSS('opacity', '1')
+  await d.locator('.scroller').evaluate((el) => { el.scrollTop = el.scrollHeight })
+  await expect(shade).toHaveCSS('opacity', '0')
+})
+
 for (const [w, h, box] of [[1440, 1024, { x: 480, y: 388, width: 480, height: 249 }], [768, 1024, { x: 144, y: 388, width: 480, height: 249 }], [375, 667, { x: 24, y: 224, width: 327, height: 220 }]]) {
   test(`S5 — suppression à ${w} px : modale centrée`, async ({ page }) => {
     await open(page, w, h, { path: './#/invoice/XM9141' })

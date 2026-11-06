@@ -15,5 +15,5 @@ Première version (SDL-FM 1.6.0, premier challenge Guru avec le fichier Figma).
 - Persistance dans le `localStorage` ; `data.json` relu quand le navigateur est vidé (ADR-0007).
 - Navigation par ancre : la vue et le filtre retrouvés au rechargement et au retour (ADR-0006).
 - Teintes AA en thème clair (14 couples texte / fond relevés ; G2, G3) ; contour de focus de 2 px.
-- 94 tests Playwright écrits avant le code : 34 critères de la spec, 21 écrans comparés aux références du `.fig` (0,41 à 3,12 %), axe-core, W3C Nu, html-validate, ESLint, fitness functions des ADR-0004, 0005 et 0011.
+- 95 tests Playwright : 94 écrits avant le code (34 critères de la spec, 21 écrans comparés aux références du `.fig` (0,41 à 3,12 %), axe-core, W3C Nu, html-validate, ESLint, fitness functions des ADR-0004, 0005 et 0011), et la garde des écarts du parcours réel.
 - README avec une capture par état décrit ; rapport d'exécution `specs/analyse/2026-11-06-invoice-app.md`.

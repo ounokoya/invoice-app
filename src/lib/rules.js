@@ -69,11 +69,14 @@ export function validate(draft) {
 
 // Facture enregistrée au format de D1 depuis le brouillon du formulaire
 export function toInvoice(draft, { id, status }) {
-  const items = draft.items.map((item) => ({ name: item.name.trim(), quantity: Number(item.quantity) || 0, price: Number(item.price) || 0 }))
+  // un brouillon peut tout laisser vide : date du jour, quantités et prix positifs ou nuls (D2, S16)
+  const createdAt = draft.createdAt || today()
+  const amount = (value) => Math.max(0, Number(value) || 0)
+  const items = draft.items.map((item) => ({ name: item.name.trim(), quantity: amount(item.quantity), price: amount(item.price) }))
     .map((item) => ({ ...item, total: lineTotal(item) }))
   const trim = (a) => Object.fromEntries(Object.entries(a).map(([k, v]) => [k, String(v).trim()]))
   return {
-    id, createdAt: draft.createdAt, paymentDue: addDays(draft.createdAt, draft.paymentTerms), description: draft.description.trim(),
+    id, createdAt, paymentDue: addDays(createdAt, draft.paymentTerms), description: draft.description.trim(),
     paymentTerms: Number(draft.paymentTerms), clientName: draft.clientName.trim(), clientEmail: draft.clientEmail.trim(), status,
     senderAddress: trim(draft.senderAddress), clientAddress: trim(draft.clientAddress), items, total: invoiceTotal(items),
   }

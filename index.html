@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/invoice-app/assets/favicon-32x32-DQjEQYWa.png">
+    <title>Frontend Mentor | Invoice app</title>
+    <meta name="description" content="Invoice app: create, edit, filter and pay invoices, in light or dark theme.">
+    <!-- thème posé avant le premier affichage : choix gardé, sinon celui de l'appareil (ADR-0004) -->
+    <script>
+      try {
+        const saved = localStorage.getItem('invoice-app/theme')
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      } catch {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
+    <script type="module" crossorigin src="/invoice-app/assets/index-CofqIOBM.js"></script>
+    <link rel="stylesheet" crossorigin href="/invoice-app/assets/index-CznK89IY.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>This invoice app needs JavaScript.</noscript>
+  </body>
+</html>

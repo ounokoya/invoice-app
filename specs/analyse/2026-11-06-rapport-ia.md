@@ -122,4 +122,8 @@ Proposition : v1.0.3 avec P1 (en partie) et P5, avec l'accord de Koya ; ou s'arr
 | P1 | Dates `AAAA-MM-JJ` (D10 compris, normalisée au chargement), termes 1, 7, 14, 30, montants ≥ 0 ; totaux recalculés depuis les lignes ; une facture sans ligne reste permise (brouillon) | S26 : quantité négative, date 18/08/2021, terme 5 → `data.json` ; total faux → recalculé ; AA1449 (`2021-10-7`) acceptée (rouge avant) |
 | — | Trouvé en préparant P1 : un brouillon à date vidée faisait échouer l'enregistrement (`addDays('')`), et une Qty. négative aurait rendu les données gardées refusées au rechargement | S16 : date du jour, Qty. à 0, relu après rechargement (rouge avant) |
 
-Parcours réel (1440 px) : dans « Edit #XM9141 », Tab après Price → Total « 156.00 » focalisé, contour visible. **96 / 96** (une erreur réseau `ERR_NETWORK_CHANGED` au premier passage, verte au second). Publication puis rapport : chacun avec l'accord de Koya.
+Parcours réel (1440 px) : dans « Edit #XM9141 », Tab après Price → Total « 156.00 » focalisé, contour visible. **96 / 96** (une erreur réseau `ERR_NETWORK_CHANGED` au premier passage, verte au second). 
+
+## v1.0.3 publiée (2026-11-06, accord de Koya : « Oui, publie »)
+
+`main` et `v1.0.3` poussés, `gh-pages` publié. Premier passage en ligne : 95 / 96, S31 en échec : le test appuyait sur Tab juste après le clic sur la carte ; en ligne, le focus posé sur `main` par A9 arrivait après la première tabulation et `main` (sans contour, voulu) était compté. Course du test, pas du site : S31 attend désormais ce focus (S35 le vérifie déjà) ; 3 / 3 en ligne puis **96 / 96 en ligne**. Nouveau rapport : avec l'accord de Koya.

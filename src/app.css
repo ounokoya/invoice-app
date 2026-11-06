@@ -159,6 +159,11 @@
   color-scheme: dark;
 }
 
+/* point de rupture unique (768 px) : variantes md: et @variant md des composants, lu aussi par src/lib/media.svelte.js */
+@theme static {
+  --breakpoint-md: 48rem;
+}
+
 /* voile des dialogues : valeur écrite dans la règle produite (::backdrop) */
 @theme inline {
   --color-scrim: rgb(0 0 0 / 0.5);

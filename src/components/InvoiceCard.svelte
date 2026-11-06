@@ -38,7 +38,7 @@
   .status { grid-area: status; @apply self-end mb-1.5; }
   .arrow { @apply hidden; }
 
-  @media (width >= 48rem) {
+  @variant md {
     .card {
       @apply flex h-[4.5rem] items-center ps-6 pe-[1.375rem] pt-0 pb-0;
     }

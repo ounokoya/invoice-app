@@ -164,7 +164,7 @@
     scrollbar-color: var(--field-border) transparent;
   }
 
-  @media (width >= 48rem) {
+  @variant md {
     .scroller { --pe: calc(var(--spacing) * 14); }
   }
 
@@ -184,7 +184,7 @@
       background-color: var(--field-border);
     }
 
-    @media (width >= 48rem) {
+    @variant md {
       .scroller { --pe: calc(var(--spacing) * 4); }
 
       .scroller::-webkit-scrollbar-thumb {
@@ -201,7 +201,7 @@
     background-image: linear-gradient(transparent, var(--color-shade));
   }
 
-  @media (width >= 48rem) {
+  @variant md {
     .shade { background-image: linear-gradient(transparent, var(--color-shade-strong)); }
     .shade.more { @apply opacity-100; }
   }
@@ -247,7 +247,7 @@
 
   .item :global(.qty .field) { @apply px-0 text-center md:px-0; }
 
-  @media (width >= 48rem) {
+  @variant md {
     .item { @apply grid-cols-[13.375rem_2.875rem_6.25rem_1fr_auto]; }
     .item:not(.first) :global(.row-label) { @apply sr-only; }
   }

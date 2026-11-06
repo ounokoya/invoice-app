@@ -50,7 +50,7 @@
     <div class="empty">
       <img class="illustration" src={empty} alt="" width="242" height="200">
       <h2 class="empty-title">There is nothing here</h2>
-      <p class="empty-text">Create an invoice by clicking the <br><strong>{screen.wide ? 'New Invoice' : 'New'}</strong> button and get started</p>
+      <p class="empty-text">Create an invoice by clicking the <strong>{screen.wide ? 'New Invoice' : 'New'}</strong> button and get started</p>
     </div>
   {/if}
 </div>
@@ -84,7 +84,8 @@
 
   .empty-title { @apply mt-[2.625rem] text-heading-mobile font-bold text-ink md:mt-[4.125rem]; }
 
-  .empty-text { @apply mt-[1.4375rem] w-[12.5rem] text-body font-medium text-muted; }
+  /* 192 px : « New » (ou « New Invoice ») commence la 2e ligne, comme la maquette, sans <br> (largeurs mesurées dans Chromium) */
+  .empty-text { @apply mt-[1.4375rem] w-48 text-body font-medium text-muted; }
 
   .empty-text strong { @apply font-bold; }
 </style>

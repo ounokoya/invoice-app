@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 // Tests dérivés de la spec — ADR-0002 commun
-// BASE_URL=https://ounokoya.github.io/invoice-app/ npm test : vérifie le site en ligne (sans les tests visuels : références hors dépôt)
+// BASE_URL=https://ounokoya.github.io/invoice-app/ npm test : vérifie le site en ligne (tests visuels sautés là où les références, hors dépôt, manquent)
 const LOCAL = 'http://localhost:4260/invoice-app/'
 
 export default defineConfig({

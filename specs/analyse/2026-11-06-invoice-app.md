@@ -69,6 +69,12 @@ Le reste des écarts : lissage des lettres (contours de Figma contre rendu de Ch
 | — | Dans le panneau du navigateur intégré, l'ombre n'apparaît qu'à la prochaine image dessinée : la page y tourne en arrière-plan et `ResizeObserver` attend un rendu | Sans effet sur un navigateur affiché ; vérifié au défilement et dans les tests |
 | — | La date du formulaire suit le format du navigateur (`06/11/2026` en français) | Accepté : contrôle natif (Q-B3, ADR-0008) |
 
-## 5. Verdict
+## 5. En ligne (Phase 12)
 
-Les 34 critères de la spec, les 21 écrans et les fitness functions passent ; le parcours réel a trouvé deux écarts, corrigés. Prêt pour la Phase 9 (README, CHANGELOG) ; publication et soumission avec l'accord de Koya.
+Dépôt public [ounokoya/invoice-app](https://github.com/ounokoya/invoice-app) (`main` et `v1.0.0`), site publié par `npm run deploy` sur la branche `gh-pages` ; Pages activé par GitHub sur `gh-pages` dès le premier push (accord de Koya).
+
+`BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test --workers=2` : **95 réussis sur 95** (1,5 min), tests visuels compris (références présentes sur le poste).
+
+## 6. Verdict
+
+Les 34 critères de la spec, les 21 écrans et les fitness functions passent ; le parcours réel a trouvé deux écarts, corrigés. v1.0.0 publiée, 95 / 95 en ligne ; soumission sur FM avec l'accord de Koya.

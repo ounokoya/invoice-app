@@ -46,3 +46,16 @@ Prérequis vérifiés le 2026-11-06 : `gh` connecté (`repo`, `workflow`) ; dép
 Koya : « Je valide (G2) ». Analyse : `specs/visuel/invoice-app-analyse.md` et `.png`. **Toutes les propositions sont retenues** : Q-A1 à Q-A6 (teintes AA en thème clair ; `#7a5afa` et `#e62525` dans les deux thèmes, où le texte blanc était aussi sous AA) et Q-B1 à Q-B15 (adresses par ancre, formulaire et suppression en `dialog`, date et Payment Terms natifs, filtre multiple, textes mobiles de la maquette, Mark as Paid pour `pending` seulement, facture payée gardée payée, e-mail et nombres validés, `en-GB`, thème de l'appareil puis choix gardé, liste vide filtrée, compteur cohérent, relecture de `data.json`, Price à 2 décimales, focus 2 px).
 
 Penpot : Koya a créé le fichier « invoice-app » (au lieu de « FM Guru ») et y a connecté le plugin ; la maquette y est dessinée.
+
+## Maquette validée (G3, 2026-11-06)
+
+Koya : « Je valide (G3) ». Maquette : `specs/visuel/penpot/maquette.md`. **Toutes les propositions sont retenues** :
+
+| # | Point | Décision |
+|---|---|---|
+| G3-1 | États sous AA | Q-A7 survol des boutons 1 et 2 `#6742ff` ; Q-A8 survol de Delete `#c41e1e` ; Q-A9 texte des boutons 3 et 6 survolés (clair) `#515eae` ; Q-A10 en sombre, textes violets `#9277ff`, gris `#8690c7` et `#8c92b3` |
+| G3-2 | Marge | Violet 01 `#7757fa` (4,64:1) |
+| G3-3 | Focus | Champs : bordure active `#9277ff` ; boutons et liens : contour 2 px décalé de 2 px (`#7757fa` clair, `#9277ff` sombre) |
+| G3-4 | Espacement des lettres | Valeurs du `.fig` dans le code |
+| G3-5 | Écrans comparés | 21 : liste, liste vide, facture, formulaire de création complet, suppression aux 3 largeurs en clair ; liste et facture aux 3 largeurs en sombre |
+| G3-6 | Seuil visuel | 5 % par écran, recalibré en Phase 5 si besoin (écart mesuré + 1 point, accord de Koya) |

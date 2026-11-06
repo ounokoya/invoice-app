@@ -4,10 +4,10 @@
   import InvoiceList from './components/InvoiceList.svelte'
   import InvoiceView from './components/InvoiceView.svelte'
   import { find } from './lib/invoices.svelte.js'
+  import { notice, announce } from './lib/announce.svelte.js'
   import { route } from './lib/router.svelte.js'
 
   let content = $state()
-  let announcement = $state('')
   let shown = { view: route.view, id: route.id }
 
   $effect(() => {
@@ -21,7 +21,7 @@
     if (view === shown.view && (view === 'list' || id === shown.id)) return
     const left = shown.view === 'invoice' ? shown.id : null
     shown = { view, id }
-    announcement = view === 'list' ? 'Invoices' : find(id) ? `Invoice #${id}` : 'Invoice not found'
+    announce(view === 'list' ? 'Invoices' : find(id) ? `Invoice #${id}` : 'Invoice not found')
     tick().then(() => {
       const card = view === 'list' && left ? content.querySelector(`a[href="#/invoice/${left}"]`) : null
       ;(card ?? content).focus()
@@ -37,4 +37,4 @@
     <InvoiceList />
   {/if}
 </main>
-<p class="sr-only" role="status">{announcement}</p>
+<p class="sr-only" role="status">{notice.text}</p>

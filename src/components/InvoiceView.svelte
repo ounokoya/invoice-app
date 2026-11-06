@@ -1,5 +1,6 @@
 <script>
   // Facture (spec §3.3) : retour, barre de statut et actions, détail, lignes, total
+  import { tick } from 'svelte'
   import StatusBadge from './StatusBadge.svelte'
   import DeleteDialog from './DeleteDialog.svelte'
   import InvoiceForm from './InvoiceForm.svelte'
@@ -8,6 +9,7 @@
   import { listHash, go } from '../lib/router.svelte.js'
   import { formatDate, formatMoney } from '../lib/format.js'
   import { screen } from '../lib/media.svelte.js'
+  import { announce } from '../lib/announce.svelte.js'
 
   let { id } = $props()
   const invoice = $derived(find(id))
@@ -15,6 +17,14 @@
   let form = $state()
   let editButton = $state()
   let deleteButton = $state()
+
+  // A11 : le bouton disparaît ; le nouveau statut est annoncé et le focus va à « Edit »
+  async function pay() {
+    markPaid(id)
+    announce(`Invoice #${id} marked as paid`)
+    await tick()
+    editButton.focus()
+  }
 
   function confirmDelete() {
     remove(id)
@@ -33,7 +43,7 @@
         <button class="btn-light" type="button" bind:this={editButton} onclick={() => form.open(invoice)}>Edit</button>
         <button class="btn-danger delete" type="button" bind:this={deleteButton} onclick={() => deleter.open()}>Delete</button>
         {#if invoice.status === 'pending'}
-          <button class="btn-primary paid" type="button" onclick={() => markPaid(id)}>Mark as Paid</button>
+          <button class="btn-primary paid" type="button" onclick={pay}>Mark as Paid</button>
         {/if}
       </div>
     </div>

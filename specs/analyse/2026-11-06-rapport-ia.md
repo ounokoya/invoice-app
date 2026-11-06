@@ -127,3 +127,24 @@ Parcours réel (1440 px) : dans « Edit #XM9141 », Tab après Price → Total �
 ## v1.0.3 publiée (2026-11-06, accord de Koya : « Oui, publie »)
 
 `main` et `v1.0.3` poussés, `gh-pages` publié. Premier passage en ligne : 95 / 96, S31 en échec : le test appuyait sur Tab juste après le clic sur la carte ; en ligne, le focus posé sur `main` par A9 arrivait après la première tabulation et `main` (sans contour, voulu) était compté. Course du test, pas du site : S31 attend désormais ce focus (S35 le vérifie déjà) ; 3 / 3 en ligne puis **96 / 96 en ligne**. Nouveau rapport : avec l'accord de Koya.
+
+## Rapport regénéré sur la v1.0.3 (2026-11-06, accord de Koya : « Oui, regénère »)
+
+| Partie | v1.0.0 | v1.0.1 | v1.0.2 | v1.0.3 |
+|---|---|---|---|---|
+| **Global** | 8,8 | 9,0 | 9,3 | **9,4** |
+| Code Quality | 8,9 | 8,9 | 9,2 | 9,2 |
+| Best Practices | 9,1 | 9,0 | 9,2 | 9,3 (plus de remarque à traiter) |
+| File Organization | 9,6 | 9,8 | 9,8 | 9,8 |
+| Architecture | 9,3 | 9,5 | 9,5 | 9,5 |
+| Testing | 6,2 | 6,2 | 7,6 | 7,6 |
+| Design & UX / Accessibility | 7,7 | 8,8 | 9,1 | **9,5** (Total au Tab : relevé) |
+| Documentation | 9,7 | 9,8 | 9,8 | 9,8 (README 9,9) |
+
+| # | Partie | Remarque FM | Verdict |
+|---|---|---|---|
+| Q1 | Testing (« needs attention ») | Filtre seulement survolé | **Faux positif** (4e fois) : S8, S9, S11 |
+| Q2 | Testing (« needs attention ») | Thème jamais basculé dans les deux sens | **Faux positif** (3e fois) : S27 |
+| Q3 | Accessibility (« needs attention ») | Avatar sans `alt` | **Faux positif** (2e fois) : l'extrait cité montre `alt=""` |
+
+Best Practices n'a plus de remarque à traiter ; son résumé évoque des dates impossibles (mois 13) et les factures sans ligne, déjà permises pour un brouillon (S16). Plus aucune remarque juste : l'Invoice app s'arrête à **9,4 / 10**. Profil FM : toujours 375 / 400 points.

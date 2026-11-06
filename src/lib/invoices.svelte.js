@@ -1,26 +1,36 @@
 // État des factures et persistance dans le navigateur (ADR-0007, D2)
 
 import data from '../../data.json'
-import { newId, normalizeDate, toInvoice } from './rules.js'
+import { newId, normalizeDate, toInvoice, lineTotal, invoiceTotal } from './rules.js'
 
 const KEY = 'invoice-app/invoices'
 const STATUSES = ['draft', 'pending', 'paid']
+const TERMS = [1, 7, 14, 30]
+const DATE = /^\d{4}-\d{1,2}-\d{1,2}$/
 
-// D1 : forme d'une facture gardée ; une seule facture sans cette forme fait relire data.json (D2, N1)
+// D1 : forme d'une facture gardée ; une seule facture sans cette forme fait relire data.json (D2, N1, P1)
 const isObject = (value) => value !== null && typeof value === 'object'
 const isAddress = (address) => isObject(address) && ['street', 'city', 'postCode', 'country'].every((key) => typeof address[key] === 'string')
-const isItem = (item) => isObject(item) && typeof item.name === 'string' && ['quantity', 'price', 'total'].every((key) => Number.isFinite(item[key]))
+const isAmount = (value) => Number.isFinite(value) && value >= 0
+const isItem = (item) => isObject(item) && typeof item.name === 'string' && ['quantity', 'price', 'total'].every((key) => isAmount(item[key]))
 const isInvoice = (invoice) => isObject(invoice) && /^[A-Z]{2}\d{4}$/.test(invoice.id) && STATUSES.includes(invoice.status)
-  && ['createdAt', 'paymentDue', 'description', 'clientName', 'clientEmail'].every((key) => typeof invoice[key] === 'string')
-  && Number.isFinite(invoice.paymentTerms) && Number.isFinite(invoice.total)
+  && ['createdAt', 'paymentDue'].every((key) => DATE.test(invoice[key]))
+  && ['description', 'clientName', 'clientEmail'].every((key) => typeof invoice[key] === 'string')
+  && TERMS.includes(invoice.paymentTerms) && isAmount(invoice.total)
   && isAddress(invoice.senderAddress) && isAddress(invoice.clientAddress) && Array.isArray(invoice.items) && invoice.items.every(isItem)
+
+// Dates lues comme D10, totaux recalculés depuis les lignes (D5)
+function normalize(invoice) {
+  const items = invoice.items.map((item) => ({ ...item, total: lineTotal(item) }))
+  return { ...invoice, createdAt: normalizeDate(invoice.createdAt), paymentDue: normalizeDate(invoice.paymentDue), items, total: invoiceTotal(items) }
+}
 
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY))
-    if (Array.isArray(saved) && saved.every(isInvoice)) return saved
+    if (Array.isArray(saved) && saved.every(isInvoice)) return saved.map(normalize)
   } catch { /* données illisibles : on repart de data.json */ }
-  return data.map((invoice) => ({ ...invoice, createdAt: normalizeDate(invoice.createdAt), paymentDue: normalizeDate(invoice.paymentDue) }))
+  return data.map(normalize)
 }
 
 export const store = $state({ invoices: load() })

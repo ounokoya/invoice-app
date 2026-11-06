@@ -2,6 +2,22 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.4] — 2026-11-06
+
+Demande de Koya : toutes les notes du rapport IA à 9,0 au moins (Testing 7,6 sur la v1.0.3).
+
+### Added
+- 7 tests unitaires des règles pures, sans navigateur (`node --test`, aucune dépendance ajoutée) : identifiants, totaux, validation, dates et échéances, brouillons, données gardées, formats (U1 à U7, `npm run test:unit`).
+- Filtre au clavier, de l'ouverture au résultat (S36) ; bouton du thème au clavier, dans les deux sens (S37).
+
+### Changed
+- S29 passe au thème sombre par le bouton au lieu du stockage préparé.
+- La forme d'une facture gardée et sa normalisation sont dans `rules.js` (fonctions pures) ; `TERMS` partagé avec le formulaire.
+- README : 105 tests sur deux niveaux, table des règles et des parcours.
+
+### Fixed
+- Une facture gardée à date impossible (mois 13, 30 février) fait relire `data.json` (D2).
+
 ## [1.0.3] — 2026-11-06
 
 Suite du rapport regénéré sur la v1.0.2 (9,3 / 10, remarques P1 en partie et P5), avec l'accord de Koya.

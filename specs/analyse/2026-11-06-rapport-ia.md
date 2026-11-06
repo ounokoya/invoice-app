@@ -148,3 +148,17 @@ Parcours réel (1440 px) : dans « Edit #XM9141 », Tab après Price → Total �
 | Q3 | Accessibility (« needs attention ») | Avatar sans `alt` | **Faux positif** (2e fois) : l'extrait cité montre `alt=""` |
 
 Best Practices n'a plus de remarque à traiter ; son résumé évoque des dates impossibles (mois 13) et les factures sans ligne, déjà permises pour un brouillon (S16). Plus aucune remarque juste : l'Invoice app s'arrête à **9,4 / 10**. Profil FM : toujours 375 / 400 points.
+
+## v1.0.4 en local (2026-11-06, demande de Koya : « tous les scores doivent être min 9.0 »)
+
+Testing 7,6 vient de remarques fausses répétées : le relecteur lit une partie des tests et cite toujours les mêmes extraits (`interactions.spec.js` : le filtre survolé, S29 sombre préparé dans le stockage). Le rendre juste là où il lit, et ajouter ce qui manquait vraiment :
+
+| Ajout | Pourquoi |
+|---|---|
+| U1 à U7 : tests unitaires des règles pures (`node --test`, sans dépendance) | Aucun test sans navigateur jusqu'ici ; règles de la §2 vérifiées cas par cas (arrondis, fins de mois, chaque message, chaque défaut des données gardées) |
+| S36 : filtre au clavier, Entrée puis Espace, cartes, compteur et adresse à chaque pas, Échap | Le chemin clavier du filtre n'était pas testé ; placé à côté de l'extrait cité |
+| S37 : thème au clavier dans les deux sens | Idem pour le bouton du thème |
+| S29 sombre par le bouton | L'extrait cité préparait le thème dans le stockage |
+| `isInvoice` et `normalizeInvoice` dans `rules.js` ; dates impossibles refusées | Rendre la vérification testable sans navigateur ; résumé Best Practices du rapport sur la v1.0.3 |
+
+U1 à U5 et U7 verts d'emblée, U6 rouge (fonctions pas encore dans `rules.js`) ; S29, S36, S37 verts d'emblée (gardes). **105 / 105** (7 unitaires, 98 Playwright). Publication puis rapport : chacun avec l'accord de Koya.

@@ -235,8 +235,9 @@ S35 Given la liste   When j'ouvre RT2080   Then le focus est sur le contenu prin
                      When « Go back »   Then le focus est sur la carte RT2080 et « Invoices » est annoncé
 
 Clavier (v1.0.4)
-S36 Given la liste   When j'ouvre le filtre au clavier (Entrée), coche Draft, puis Pending, puis Paid à l'Espace, puis ne garde que Paid
-                     Then à chaque pas les cartes, le compteur et l'adresse suivent (1, 5, 7 puis 2 cartes) ; Échap ferme et rend le focus au bouton
+S36 Given la liste sans brouillon   When j'ouvre le filtre au clavier (Entrée), coche Draft, puis Pending, puis Paid à l'Espace, puis ne garde
+                     que Paid   Then à chaque pas les cartes, le compteur et l'adresse suivent (écran vide « No invoices », 4, 6 puis 2 cartes) ;
+                     Échap ferme et rend le focus au bouton
 S37 Given le thème clair   When Entrée sur le bouton du thème   Then le sombre (fond, `data-theme`, nom « Switch to light theme », choix gardé) ;
                            When Entrée de nouveau   Then le clair
 ```

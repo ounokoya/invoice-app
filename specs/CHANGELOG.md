@@ -2,6 +2,14 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.2] — 2026-11-06
+
+Suite du rapport regénéré sur la v1.0.1 (9,0 / 10, remarques N1 et N6), avec l'accord de Koya.
+
+### Fixed
+- Données gardées sans la forme d'une facture (`[null]`, facture sans lignes, statut inconnu) : `data.json` est relu au lieu d'un rendu cassé (D2, S26 ; N1).
+- « Mark as Paid » : le nouveau statut est annoncé et le focus va à « Edit », le bouton disparaissant (A11, S23 ; N6).
+
 ## [1.0.1] — 2026-11-06
 
 Suite du rapport IA FM (8,8 / 10, `specs/analyse/2026-11-06-rapport-ia.md`), avec l'accord de Koya.

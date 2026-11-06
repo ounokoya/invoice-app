@@ -30,6 +30,17 @@ Profil FM juste après la soumission : 375 points (« 375 / 400 » vers le nivea
 
 Deux faux positifs (R1, R2) : comme pour REST Countries, le relecteur ne lit qu'une partie des tests (il cite `form.spec.js`, `interactions.spec.js`, `layout.spec.js` et S25). Testing 6,2 vient surtout d'eux ; la table « workflow → test » du README vise à les rendre visibles.
 
-## Proposition : v1.0.1
+## v1.0.1 en local (2026-11-06, accord de Koya : « Oui, corrige »)
 
-R3 à R10 corrigés, un commit par remarque, tests ajoutés pour R3, R4, R5 et R6 (rouges avant le correctif) ; README : table des tests et lien du dépôt ; publication puis « Regenerate report », chacun avec l'accord de Koya.
+| # | Fait | Test |
+|---|---|---|
+| R3 | S27 : second clic, retour au sombre, gardé au rechargement | S27 (vert d'emblée : garde) |
+| R4 | Focus sur `main` (`tabindex="-1"`, sans contour) ou sur la carte quittée ; région `role="status"` avec le titre de la vue ; rien au premier chargement | S35 (rouge avant) |
+| R5 | `onclose` de la suppression : focus rendu à « Delete » | S24 étendu à Échap (vert d'emblée : le `<dialog>` natif le faisait déjà) |
+| R6 | `role="alert"` sur les messages du bas | S14 (rouge avant) |
+| R7 | `invoice.html` retiré | — |
+| R8 | `<br>` retiré ; bloc de 192 px (2e ligne desktop : 187,6 px ; « New » remonterait vers 198 px) | S9, S34 (écrans vides : 0,49 à 2,16 %, inchangés) |
+| R9 | `@theme static { --breakpoint-md }` ; `@variant md` dans les composants ; `media.svelte.js` lit le token | S1 à S6, S34 |
+| R10 | Ligne « Repository » ; table « parcours → scénarios → fichier » (pour R1 et R2) | — |
+
+Parcours réel au clavier (1440 px) : Entrée sur une carte → focus sur le contenu, « Invoice #RT3080 » annoncé ; Tab → « Go back » ; Entrée → focus sur la carte RT3080, « Invoices » annoncé. Le contour du `main` focalisé entourait toute la page : retiré (élément ni interactif ni dans l'ordre du Tab). **96 / 96**. Publication puis « Regenerate report » : chacun avec l'accord de Koya.

@@ -8,7 +8,7 @@
 |---|---|---|---|
 | P1 | Périmètre | Front + localStorage ; full-stack ; front seul | **Front + localStorage** : tout le brief et le premier bonus (les changements restent après rechargement) ; GitHub Pages |
 | P2 | Pile | Svelte 5 + Vite ; JavaScript sans cadriciel | **Svelte 5 + Vite** : composants et état réactif ; cohérent avec LaunchKit (SvelteKit) dans le portfolio ; Tailwind v4, Playwright et règles FM gardés |
-| P3 | Penpot | Un fichier « FM Guru » ; un fichier par Guru | **Un fichier « FM Guru »**, une page par Guru ; Koya le crée et y connecte le plugin |
+| P3 | Penpot | Un fichier « FM Guru » ; un fichier par Guru | **Un fichier « FM Guru »**, une page par Guru ; dans les faits, Koya a créé un fichier « invoice-app » (voir G2) |
 | P4 | Démarrage FM et téléchargements | Maintenant ; après G1 | **Maintenant** : challenge démarré (1 des 2 crédits premium du mois ; il en reste 1, recharge le 2026-12-06) ; `invoice-app.zip` (76 Ko) et `invoice-app-figma.zip` (788 Ko) téléchargés depuis frontendmentor.io |
 
 Choix déjà faits pour l'étape F : Guru Invoice app puis Kanban ; fichiers Figma pour ces 2 Guru (`frontmentor/specs/TASKS.md`).
@@ -40,3 +40,9 @@ Koya : « Je valide (G1) » (schéma sur le canevas partagé, zone x 106 200). *
 | 11 à 13 | Dépôt public `invoice-app`, `gh-pages`, soumission FM (accord), rapport IA trié |
 
 Prérequis vérifiés le 2026-11-06 : `gh` connecté (`repo`, `workflow`) ; dépôts `invoice-app` et `kanban-task-management` libres ; Java 21 et Chromium de Playwright présents ; plugin Penpot connecté (fichier « FM Guru » à créer par Koya) ; Pro : une analyse IA par solution soumise.
+
+## Analyse validée (G2, 2026-11-06)
+
+Koya : « Je valide (G2) ». Analyse : `specs/visuel/invoice-app-analyse.md` et `.png`. **Toutes les propositions sont retenues** : Q-A1 à Q-A6 (teintes AA en thème clair ; `#7a5afa` et `#e62525` dans les deux thèmes, où le texte blanc était aussi sous AA) et Q-B1 à Q-B15 (adresses par ancre, formulaire et suppression en `dialog`, date et Payment Terms natifs, filtre multiple, textes mobiles de la maquette, Mark as Paid pour `pending` seulement, facture payée gardée payée, e-mail et nombres validés, `en-GB`, thème de l'appareil puis choix gardé, liste vide filtrée, compteur cohérent, relecture de `data.json`, Price à 2 décimales, focus 2 px).
+
+Penpot : Koya a créé le fichier « invoice-app » (au lieu de « FM Guru ») et y a connecté le plugin ; la maquette y est dessinée.

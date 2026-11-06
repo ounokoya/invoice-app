@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { open, card, newButton, filterButton, statusBox, button, dialog, group, field, style, sameColor } from './helpers.js'
+import { open, main, card, newButton, filterButton, statusBox, button, dialog, group, field, style, sameColor } from './helpers.js'
 
 // Spec §6 et §8 — S29 à S31
 
@@ -79,6 +79,7 @@ test('S31 — liste, facture, formulaire, suppression : focus visible jusqu\'au 
   const list = await walk(page)
   expect(list.length, 'liste : logo, thème, filtre, New Invoice, 7 cartes').toBeGreaterThanOrEqual(11)
   await card(page, 'XM9141').click()
+  await expect(main(page), 'focus posé sur la vue (A9) avant le parcours').toBeFocused()
   const view = await walk(page)
   expect(view.length, 'facture : Go back, Edit, Delete, Mark as Paid').toBeGreaterThanOrEqual(4)
   await button(page, 'Edit').click()

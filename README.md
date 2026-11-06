@@ -11,6 +11,7 @@ This is a solution to the [Invoice app challenge on Frontend Mentor](https://www
 - [My process](#my-process)
   - [Built with](#built-with)
   - [Workflow](#workflow)
+  - [Tests](#tests)
   - [What I learned](#what-i-learned)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
@@ -48,6 +49,7 @@ Users should be able to:
 
 - Solution URL: [frontendmentor.io/solutions/invoice-app-with-svelte-5-tailwind-v4-native-dialogs-and-playwright-8rZnNp_EUI](https://www.frontendmentor.io/solutions/invoice-app-with-svelte-5-tailwind-v4-native-dialogs-and-playwright-8rZnNp_EUI)
 - Live Site URL: [ounokoya.github.io/invoice-app](https://ounokoya.github.io/invoice-app/)
+- Repository: [github.com/ounokoya/invoice-app](https://github.com/ounokoya/invoice-app)
 
 ## My process
 
@@ -69,9 +71,27 @@ Before any code, the design was analysed and rebuilt:
 1. **Figma file read without Figma** — the `.fig` file was decoded with a small script (`scripts/fig/`): exact positions, sizes, colours and letter spacing, and reference images of 55 screens rendered from the file's own geometry. The premium design files stay out of the repository (ADR-0010).
 2. **Visual analysis in Excalidraw** — screens, interactive elements, design inconsistencies and a contrast audit of both themes → [`specs/visuel/`](./specs/visuel/)
 3. **Penpot mockup** — library, components with their hover and focus states, key screens → [`specs/visuel/penpot/`](./specs/visuel/penpot/)
-4. **Spec, then tests** — 34 Given/When/Then scenarios and the accessible names the tests rely on → [`specs/specifications/`](./specs/specifications/); the Playwright tests were written before the code and checked to fail on the starter
+4. **Spec, then tests** — 35 Given/When/Then scenarios and the accessible names the tests rely on → [`specs/specifications/`](./specs/specifications/); the Playwright tests were written before the code and checked to fail on the starter
 5. **Decisions** — Svelte, tokens and themes, routing, persistence, dialogs, formats, publication → [`specs/adr/`](./specs/adr/)
 6. **Code** — one commit per part (base, list, invoice and delete, form, fixes), then a walk-through in a real browser from 320 to 1440 px → [`specs/analyse/`](./specs/analyse/)
+
+### Tests
+
+96 Playwright tests, derived from the spec's scenarios (S1–S35), run on the build (`npm test`) and on the live site (`BASE_URL=https://ounokoya.github.io/invoice-app/ npm test`). Where each user flow is tested:
+
+| What users can do | Scenarios | File |
+|---|---|---|
+| See the right layout at 375, 768 and 1440 px, with no horizontal scroll from 320 px | S1–S6 | [`layout.spec.js`](./tests/layout.spec.js) |
+| See the 7 invoices of `data.json` on first load | S7 | [`list.spec.js`](./tests/list.spec.js) |
+| Filter by status: every combination (cards, order, counter, address, reload), and a filter with no result | S8, S9 | [`list.spec.js`](./tests/list.spec.js) |
+| Read every invoice field by field; Go back keeps the filter; unknown id; focus and announcement when the view changes | S10–S12, S35 | [`invoice.spec.js`](./tests/invoice.spec.js) |
+| Create an invoice: empty form, every error message, full invoice, draft, item totals, Discard and Escape | S13–S19 | [`form.spec.js`](./tests/form.spec.js) |
+| Edit and save, complete a draft, mark as paid, delete after confirmation | S20–S24 | [`edit.spec.js`](./tests/edit.spec.js) |
+| Keep every change after a reload; toggle the theme both ways; colours of both themes | S25–S28 | [`persistence.spec.js`](./tests/persistence.spec.js) |
+| Hover states, reduced motion, keyboard to the last element, focus kept in dialogs | S29–S31 | [`interactions.spec.js`](./tests/interactions.spec.js) |
+| axe-core in every view, size and theme; W3C Nu, html-validate and ESLint | S32, S33 | [`accessibility.spec.js`](./tests/accessibility.spec.js), [`static.spec.js`](./tests/static.spec.js) |
+| 21 screens compared with images rendered from the Figma file | S34 | [`visual.spec.js`](./tests/visual.spec.js) |
+| Architecture rules: colours only in the tokens, nothing loaded from other domains, no design file in the repository | ADR-0004, 0005, 0011 | [`fitness.spec.js`](./tests/fitness.spec.js) |
 
 ### What I learned
 
@@ -113,7 +133,7 @@ $effect(() => {
 ### Continued development
 
 - **Design inconsistencies.** The tablet empty state says "Create a new invoice…" while desktop and mobile say "Create an invoice…": one text everywhere. One screen shows the counter "There is currently 14 invoices active": the counter always says "There are N total invoices", and follows the filter ("There are 4 pending invoices"). "Mark as Paid" is offered for pending invoices only, and a paid invoice stays paid when edited.
-- **Accessibility.** The dark theme passes AA everywhere; in the light theme, 14 text/background pairs were under 4.5:1 and use the nearest AA shade of the same hue: secondary text `#888eb0` → `#68709b`, "Paid" `#33d69f` → `#1a8360`, "Pending" `#ff8f00` → `#ab6000`, white on the violet buttons with `#7757fa`, white on "Delete" with `#e62525`. Every button and link has a 2 px focus outline; fields show the design's violet border.
+- **Accessibility.** The dark theme passes AA everywhere; in the light theme, 14 text/background pairs were under 4.5:1 and use the nearest AA shade of the same hue: secondary text `#888eb0` → `#68709b`, "Paid" `#33d69f` → `#1a8360`, "Pending" `#ff8f00` → `#ab6000`, white on the violet buttons with `#7757fa`, white on "Delete" with `#e62525`. Every button and link has a 2 px focus outline; fields show the design's violet border. After Frontend Mentor's report (v1.0.1), focus moves to the new view and its title is announced, dialogs give focus back to the button that opened them, and the form's summary messages are announced.
 - **Native controls.** The date picker and the payment terms list open as the browser's own lists (the challenge allows it); closed, they look like the design.
 - **Visual comparison with the Figma file.** Screenshots of 21 screens differ from the reference images by 0.4–3.1 % (threshold 5 %), mostly text antialiasing between Figma's glyph outlines and Chromium.
 - **Next steps.** An undo after deleting an invoice, and a back end so the invoices follow the user from one device to another.

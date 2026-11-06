@@ -184,6 +184,11 @@
     outline-offset: 0.125rem;
   }
 
+  /* contenu focalisé par le script au changement de vue (A9) : ni interactif ni dans l'ordre du Tab, pas de contour autour de la page */
+  main[tabindex="-1"] {
+    outline: none;
+  }
+
   input:focus-visible,
   select:focus-visible {
     outline: none;

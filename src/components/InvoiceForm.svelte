@@ -17,6 +17,16 @@
   let errors = $state({})
   let messages = $state([])
   const p = $derived(editing ? 'edit' : 'new')
+
+  // Ombre au-dessus du pied tant qu'il reste du formulaire en dessous (écrans « With Scroll » de la maquette)
+  let more = $state(false)
+  const measure = () => { more = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight > 1 }
+  $effect(() => {
+    const observer = new ResizeObserver(measure)
+    observer.observe(scroller)
+    observer.observe(scroller.firstElementChild)
+    return () => observer.disconnect()
+  })
   const TERMS = [1, 7, 14, 30]
 
   const toDraft = (inv) => ({
@@ -62,7 +72,7 @@
 
 <dialog class="drawer" aria-labelledby="{p}-title" bind:this={dialog} onclose={() => returnFocus()?.focus()}>
   <AppBar decorative />
-  <div class="scroller" bind:this={scroller}>
+  <div class="scroller" bind:this={scroller} onscroll={measure}>
     <form novalidate onsubmit={(event) => { event.preventDefault(); submit('send') }}>
       <button class="back" type="button" onclick={close}><img src={arrowLeft} alt="" width="7" height="10">Go back</button>
       <h2 id="{p}-title" class="title">{#if editing}Edit <span class="text-hash">#</span>{editing}{:else}New Invoice{/if}</h2>
@@ -131,6 +141,7 @@
       </div>
     </form>
   </div>
+  <div class="shade" class:more></div>
 </dialog>
 
 <style>
@@ -142,10 +153,58 @@
 
   .drawer::backdrop { @apply bg-scrim; }
 
-  /* bloc de référence des libellés sr-only : ils défilent avec le formulaire */
-  .scroller { @apply relative h-full overflow-y-auto; }
+  /* bloc de référence des libellés sr-only : ils défilent avec le formulaire.
+     Barre de la maquette : pouce de 8 px arrondi, à 8 px du bord (32 px dès 768 px), dans une gouttière gardée ;
+     --pe est la marge de droite du formulaire, réduite de la largeur de la gouttière */
+  .scroller {
+    @apply relative h-full overflow-y-auto;
+    --pe: calc(var(--spacing) * 6);
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--field-border) transparent;
+  }
 
-  form { @apply px-6 pt-[2.0625rem] md:ps-14 md:pe-14 md:pt-[3.6875rem] lg:ps-[9.9375rem]; }
+  @media (width >= 48rem) {
+    .scroller { --pe: calc(var(--spacing) * 14); }
+  }
+
+  @supports selector(::-webkit-scrollbar) {
+    .scroller {
+      --pe: calc(var(--spacing) * 2);
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
+
+    .scroller::-webkit-scrollbar { @apply w-4 md:w-10; }
+
+    .scroller::-webkit-scrollbar-thumb {
+      border-inline-end: calc(var(--spacing) * 2) solid transparent;
+      border-radius: 0.25rem 0.75rem 0.75rem 0.25rem / 0.25rem;
+      background-clip: padding-box;
+      background-color: var(--field-border);
+    }
+
+    @media (width >= 48rem) {
+      .scroller { --pe: calc(var(--spacing) * 4); }
+
+      .scroller::-webkit-scrollbar-thumb {
+        border-inline-end-width: calc(var(--spacing) * 8);
+        border-radius: 0.25rem 2.25rem 2.25rem 0.25rem / 0.25rem;
+      }
+    }
+  }
+
+  form { @apply ps-6 pe-(--pe) pt-[2.0625rem] md:ps-14 md:pt-[3.6875rem] lg:ps-[9.9375rem]; }
+
+  .shade {
+    @apply pointer-events-none absolute inset-x-0 bottom-[5.6875rem] h-16 md:bottom-[6.9375rem] md:h-[8.8125rem] md:opacity-0;
+    background-image: linear-gradient(transparent, var(--color-shade));
+  }
+
+  @media (width >= 48rem) {
+    .shade { background-image: linear-gradient(transparent, var(--color-shade-strong)); }
+    .shade.more { @apply opacity-100; }
+  }
 
   .back { @apply flex w-fit cursor-pointer items-center gap-6 text-heading-s font-bold text-ink md:hidden; }
 
@@ -202,7 +261,7 @@
   .messages { @apply mt-8 text-tiny font-semibold text-error; }
 
   .footer {
-    @apply sticky bottom-0 -mx-6 mt-[5.5rem] flex h-[5.6875rem] items-center gap-[0.4375rem] bg-surface px-6 md:mx-0 md:mt-[2.4375rem] md:h-auto md:gap-2 md:px-0 md:pb-8;
+    @apply sticky bottom-0 -ms-6 -me-(--pe) mt-[5.5rem] flex h-[5.6875rem] items-center gap-[0.4375rem] bg-surface ps-6 pe-(--pe) md:mx-0 md:mt-2 md:h-auto md:gap-2 md:px-0 md:pt-[1.9375rem] md:pb-8;
   }
 
   .footer.editing { @apply justify-end; }

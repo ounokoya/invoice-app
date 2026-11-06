@@ -1,4 +1,7 @@
-// Règles de gestion de la spec (§2) : fonctions pures (ADR-0007)
+// Règles de gestion de la spec (§2) : fonctions pures (ADR-0007), testées sans navigateur (tests/unit)
+
+export const STATUSES = ['draft', 'pending', 'paid']
+export const TERMS = [1, 7, 14, 30]
 
 // D10 : « 2021-10-7 » → « 2021-10-07 »
 export function normalizeDate(value) {
@@ -65,6 +68,31 @@ export function validate(draft) {
   const validItem = draft.items.some((item, i) => !['name', 'quantity', 'price'].some((k) => errors[`items.${i}.${k}`]))
   if (!validItem) messages.push('- An item must be added')
   return { errors, messages, ok: Object.keys(errors).length === 0 && messages.length === 0 }
+}
+
+// D1, D2 : forme d'une facture gardée (dates qui existent, D10 compris ; termes de TERMS ; montants positifs ou nuls ;
+// un brouillon peut n'avoir aucune ligne)
+const isObject = (value) => value !== null && typeof value === 'object'
+const isAmount = (value) => Number.isFinite(value) && value >= 0
+const isDate = (value) => {
+  if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(value)) return false
+  const [y, m, d] = value.split('-').map(Number)
+  const date = new Date(Date.UTC(y, m - 1, d))
+  return date.getUTCMonth() === m - 1 && date.getUTCDate() === d
+}
+const isAddress = (address) => isObject(address) && ['street', 'city', 'postCode', 'country'].every((key) => typeof address[key] === 'string')
+const isItem = (item) => isObject(item) && typeof item.name === 'string' && ['quantity', 'price', 'total'].every((key) => isAmount(item[key]))
+
+export const isInvoice = (invoice) => isObject(invoice) && /^[A-Z]{2}\d{4}$/.test(invoice.id) && STATUSES.includes(invoice.status)
+  && isDate(invoice.createdAt) && isDate(invoice.paymentDue)
+  && ['description', 'clientName', 'clientEmail'].every((key) => typeof invoice[key] === 'string')
+  && TERMS.includes(invoice.paymentTerms) && isAmount(invoice.total)
+  && isAddress(invoice.senderAddress) && isAddress(invoice.clientAddress) && Array.isArray(invoice.items) && invoice.items.every(isItem)
+
+// Dates lues comme D10, totaux recalculés depuis les lignes (D5)
+export function normalizeInvoice(invoice) {
+  const items = invoice.items.map((item) => ({ ...item, total: lineTotal(item) }))
+  return { ...invoice, createdAt: normalizeDate(invoice.createdAt), paymentDue: normalizeDate(invoice.paymentDue), items, total: invoiceTotal(items) }
 }
 
 // Facture enregistrée au format de D1 depuis le brouillon du formulaire

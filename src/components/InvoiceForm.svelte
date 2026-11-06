@@ -5,7 +5,7 @@
   import Field from './Field.svelte'
   import arrowLeft from '../../assets/icon-arrow-left.svg'
   import trash from '../../assets/icon-delete.svg'
-  import { emptyInvoice, emptyItem, validate, lineTotal } from '../lib/rules.js'
+  import { emptyInvoice, emptyItem, validate, lineTotal, TERMS } from '../lib/rules.js'
   import { create, update } from '../lib/invoices.svelte.js'
   import { formatAmount } from '../lib/format.js'
 
@@ -27,7 +27,6 @@
     observer.observe(scroller.firstElementChild)
     return () => observer.disconnect()
   })
-  const TERMS = [1, 7, 14, 30]
 
   const toDraft = (inv) => ({
     createdAt: inv.createdAt, paymentTerms: inv.paymentTerms, description: inv.description, clientName: inv.clientName, clientEmail: inv.clientEmail,

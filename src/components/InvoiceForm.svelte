@@ -126,7 +126,7 @@
       </fieldset>
 
       {#if messages.length}
-        <div class="messages">{#each messages as m (m)}<p>{m}</p>{/each}</div>
+        <div class="messages" role="alert">{#each messages as m (m)}<p>{m}</p>{/each}</div>
       {/if}
 
       <div class="footer" class:editing>

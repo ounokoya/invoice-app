@@ -46,6 +46,7 @@ Users should be able to:
 
 ### Links
 
+- Solution URL: [frontendmentor.io/solutions/invoice-app-with-svelte-5-tailwind-v4-native-dialogs-and-playwright-8rZnNp_EUI](https://www.frontendmentor.io/solutions/invoice-app-with-svelte-5-tailwind-v4-native-dialogs-and-playwright-8rZnNp_EUI)
 - Live Site URL: [ounokoya.github.io/invoice-app](https://ounokoya.github.io/invoice-app/)
 
 ## My process

@@ -48,3 +48,30 @@ Parcours réel au clavier (1440 px) : Entrée sur une carte → focus sur le con
 ## v1.0.1 publiée (2026-11-06, accord de Koya : « Oui, publie »)
 
 `main` et `v1.0.1` poussés, `gh-pages` publié ; `BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test --workers=2` : **96 réussis sur 96**. « Regenerate report » : avec l'accord de Koya.
+
+## Rapport regénéré sur la v1.0.1 (2026-11-06, accord de Koya : « Oui, regénère »)
+
+| Partie | v1.0.0 | v1.0.1 |
+|---|---|---|
+| **Global** | 8,8 | **9,0** |
+| Best Practices | 9,1 | 9,0 |
+| File Organization | 9,6 | 9,8 (`invoice.html` retiré, relevé) |
+| Architecture | 9,3 | 9,5 (point de rupture unique, relevé) |
+| Testing | 6,2 | 6,2 |
+| Accessibility | 7,7 | 8,8 (focus de vue, focus rendu, messages annoncés : relevés) |
+| README | 9,8 | 9,9 (lien du dépôt, relevé) |
+| Commits | 9,6 | 9,6 |
+
+| # | Partie | Remarque FM | Verdict | Proposition |
+|---|---|---|---|---|
+| N1 | Best Practices (« needs attention ») | `load()` accepte n'importe quel tableau du `localStorage` (`[null]`, facture sans `items`) : le rendu peut casser | Juste | Vérifier chaque facture gardée (champs requis, statut connu, lignes) ; sinon relire `data.json` ; test avec `[null]` et une facture sans `items` |
+| N2 | Best Practices (« needs attention ») | `invoice.html` toujours présent | **Faux positif** : retiré en v1.0.1 ; la partie File Organization du même rapport le note | Aucune |
+| N3 | Testing (« needs attention ») | Filtre seulement ouvert et survolé | **Faux positif** (R1 répété mot pour mot) : S8, S9, S11 ; table du README | Aucune |
+| N4 | Testing (« needs attention ») | Edit, Delete, Mark as Paid jamais menés au bout | **Faux positif** (R2 répété) : S21 à S25 ; le résumé du même rapport cite « editing, payment, deletion » comme couverts | Aucune |
+| N5 | Testing (« needs attention ») | Bouton du thème jamais cliqué dans les deux sens | **Faux positif** depuis la v1.0.1 : S27 clique dans les deux sens (`persistence.spec.js`) | Aucune |
+| N6 | Accessibility (« needs attention ») | « Mark as Paid » disparaît après le clic : focus perdu, nouveau statut non annoncé | Juste | Annoncer « Invoice #XM9141 marked as paid » (région de statut) et donner le focus à « Edit » ; S23 étendu |
+| N7 | Accessibility (« needs attention ») | L'avatar n'aurait pas d'`alt` | **Faux positif** : l'extrait cité montre `alt=""` (image décorative, A5) | Aucune |
+
+Testing reste à 6,2 : les trois remarques de test sont reprises telles quelles, sans relire `list.spec.js`, `edit.spec.js` ni le S27 étendu, malgré la table « parcours → test » du README. Comme pour REST Countries, la note Testing de ce relecteur ne suit pas les tests du dépôt ; ne pas ajouter de tests en double pour elle.
+
+Proposition : v1.0.2 avec N1 et N6 (deux commits, tests rouges d'abord), avec l'accord de Koya.

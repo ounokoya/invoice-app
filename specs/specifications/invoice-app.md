@@ -1,7 +1,8 @@
-# Spec — Invoice app (v1.0.0)
+# Spec — Invoice app (v1.0.1)
 
 > SDL-FM 1.6.0 Phase 4. Sources : analyse validée (G2) `specs/visuel/invoice-app-analyse.md`, maquette validée (G3) `specs/visuel/penpot/maquette.md`, tokens `specs/reference/tokens.md`, README du starter (comportements attendus), décisions dans `specs/brainstorming/2026-11-06-invoice-app.md`.
 > Cette spec dit **quoi** et **pourquoi**, jamais **comment**.
+> v1.0.1 (2026-11-06, accord de Koya) : remarques R3 à R6 du rapport IA FM (`specs/analyse/2026-11-06-rapport-ia.md`) : A3 complété, A9 et A10 ajoutés, S14, S24 et S27 étendus, S35 ajouté.
 
 ## 1. Objectif
 
@@ -134,12 +135,14 @@ Les changements de couleur peuvent être progressifs ; aucune transition si `pre
 |---|---|
 | A1 | Un seul `h1` par vue (« Invoices », « #XM9141 ») ; `h2` pour la liste vide et les dialogues |
 | A2 | Repères : un `header` (barre), un `main` ; dialogues en `dialog` modal nommés par leur titre ; la suppression est un dialogue d'alerte |
-| A3 | Chaque champ a son `label` ; son erreur lui est liée (`aria-invalid`, description) ; le premier champ en erreur reçoit le focus après un envoi refusé |
+| A3 | Chaque champ a son `label` ; son erreur lui est liée (`aria-invalid`, description) ; le premier champ en erreur reçoit le focus après un envoi refusé ; les messages du bas sont annoncés (alerte) |
 | A4 | Lignes de la facture en tableau dès 768 px (en-têtes de colonnes) |
 | A5 | Statut lu en texte ; avatar, illustration, chevrons et points décoratifs |
 | A6 | Contraste AA (4,5:1, 3:1 pour les grands textes et les bordures de champ) dans les deux thèmes, survol compris |
 | A7 | Focus visible sur chaque élément interactif ; ordre clavier = ordre de lecture |
 | A8 | Pas de transition si `prefers-reduced-motion: reduce` |
+| A9 | Changement de vue (pas au premier chargement) : le focus va au contenu principal, ou, au retour à la liste, à la carte de la facture quittée ; le titre de la vue est annoncé (région de statut) |
+| A10 | Un dialogue fermé rend le focus au bouton qui l'a ouvert |
 
 ### Noms accessibles utilisés par les tests
 
@@ -180,7 +183,7 @@ S12 Given une facture pending   Then « Mark as Paid » ; Given paid ou draft   
 
 Créer
 S13 Given « New Invoice »   Then dialogue « New Invoice », champs vides sauf Invoice Date (aujourd'hui) et Payment Terms (Net 30 Days), une ligne vide
-S14 Given le formulaire vide   When « Save & Send »   Then chaque champ « can't be empty », les deux messages du bas, focus sur le 1er champ, rien n'est créé
+S14 Given le formulaire vide   When « Save & Send »   Then chaque champ « can't be empty », les deux messages du bas (annoncés), focus sur le 1er champ, rien n'est créé
 S15 Given le formulaire rempli (2 lignes, Net 7 Days)   When « Save & Send »   Then une 8e facture pending : id au format D3, unique,
                                    paymentDue = createdAt + 7 jours, totaux des lignes et de la facture (D5), tous les champs gardés
 S16 Given le formulaire avec seulement Client's Name   When « Save as Draft »   Then une facture draft, sans erreur
@@ -195,14 +198,15 @@ S21 Given Edit   When je change le client et une ligne puis « Save Changes »  
                  When je vide un champ   Then « can't be empty » et rien n'est gardé ; When « Cancel »   Then aucun changement
 S22 Given le brouillon FV2353   When je le complète puis « Save Changes »   Then statut pending
 S23 Given XM9141 pending   When « Mark as Paid »   Then badge Paid, bouton absent, carte de la liste Paid
-S24 Given une facture   When « Delete »   Then dialogue d'alerte « Confirm Deletion » avec son id ; When « Cancel »   Then elle reste ;
+S24 Given une facture   When « Delete »   Then dialogue d'alerte « Confirm Deletion » avec son id ; When « Cancel » ou Échap   Then elle reste,
+                        le focus revient à « Delete » ;
                         When « Delete »   Then la liste sans elle, compteur à 6
 
 Persistance et thème
 S25 Given une création, une modification, un paiement, une suppression   When je recharge   Then chaque changement est retrouvé
 S26 Given le navigateur vidé de ses données   When je recharge   Then les 7 factures de data.json
 S27 Given l'appareil en thème sombre, premier passage   Then le thème sombre ; When je clique le bouton du thème   Then le clair,
-                                                         gardé au rechargement
+                                                         gardé au rechargement ; When je clique de nouveau   Then le sombre, gardé
 S28 Given chaque thème   Then fonds, textes et badges de la §4
 
 Interactions et accessibilité
@@ -217,4 +221,8 @@ S33 Given le HTML servi   Then validateur W3C Nu et html-validate (réglage FM) 
 
 Visuel (G3-5, G3-6 : 5 %, références corrigées hors dépôt ; tests sautés sans design/)
 S34 Given les 21 écrans de G3-5   Then chaque capture vs design/reference-aa/<écran>.png ≤ 5,0 %
+
+Navigation (v1.0.1, A9)
+S35 Given la liste   When j'ouvre RT2080   Then le focus est sur le contenu principal, « Invoice #RT2080 » est annoncé, Tab mène à « Go back » ;
+                     When « Go back »   Then le focus est sur la carte RT2080 et « Invoices » est annoncé
 ```

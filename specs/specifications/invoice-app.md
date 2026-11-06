@@ -1,9 +1,10 @@
-# Spec — Invoice app (v1.0.2)
+# Spec — Invoice app (v1.0.3)
 
 > SDL-FM 1.6.0 Phase 4. Sources : analyse validée (G2) `specs/visuel/invoice-app-analyse.md`, maquette validée (G3) `specs/visuel/penpot/maquette.md`, tokens `specs/reference/tokens.md`, README du starter (comportements attendus), décisions dans `specs/brainstorming/2026-11-06-invoice-app.md`.
 > Cette spec dit **quoi** et **pourquoi**, jamais **comment**.
 > v1.0.1 (2026-11-06, accord de Koya) : remarques R3 à R6 du rapport IA FM (`specs/analyse/2026-11-06-rapport-ia.md`) : A3 complété, A9 et A10 ajoutés, S14, S24 et S27 étendus, S35 ajouté.
 > v1.0.2 (2026-11-06, accord de Koya) : remarques N1 et N6 du rapport regénéré : D2 complété, A11 ajouté, S23 et S26 étendus.
+> v1.0.3 (2026-11-06, accord de Koya) : remarques P1 (en partie) et P5 du rapport regénéré : D2 et A7 précisés, S18 et S26 étendus.
 
 ## 1. Objectif
 
@@ -14,7 +15,7 @@ Une application de factures : les voir, les filtrer par statut, les créer (brou
 | # | Règle | Origine |
 |---|---|---|
 | D1 | Une facture : `id`, `createdAt`, `paymentDue`, `description`, `paymentTerms` (1, 7, 14 ou 30), `clientName`, `clientEmail`, `status` (`draft`, `pending`, `paid`), `senderAddress` et `clientAddress` (`street`, `city`, `postCode`, `country`), `items` (`name`, `quantity`, `price`, `total`), `total` | `data.json` |
-| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier ; un tableau gardé illisible, ou dont une facture n'a pas la forme de D1, est ignoré : `data.json` est relu | P1, Q-B13, N1 |
+| D2 | Premier chargement (rien dans le navigateur) : les 7 factures de `data.json`, dans leur ordre ; ensuite, les factures gardées (clé `invoice-app/invoices` du `localStorage`, tableau JSON au format de D1), la plus récente créée en dernier ; un tableau gardé illisible, ou dont une facture n'a pas la forme de D1, est ignoré : `data.json` est relu (dates `AAAA-MM-JJ`, D10 compris ; termes 1, 7, 14 ou 30 ; quantités et prix positifs ou nuls ; un brouillon peut n'avoir aucune ligne) ; les totaux d'une facture gardée sont recalculés depuis ses lignes | P1, Q-B13, N1 |
 | D3 | `id` d'une nouvelle facture : 2 lettres majuscules puis 4 chiffres, différent des `id` existants | README |
 | D4 | `paymentDue` = `createdAt` + `paymentTerms` jours | README |
 | D5 | `total` d'une ligne = `quantity` × `price` ; `total` de la facture = somme des lignes | README, Q-B14 |
@@ -140,7 +141,7 @@ Les changements de couleur peuvent être progressifs ; aucune transition si `pre
 | A4 | Lignes de la facture en tableau dès 768 px (en-têtes de colonnes) |
 | A5 | Statut lu en texte ; avatar, illustration, chevrons et points décoratifs |
 | A6 | Contraste AA (4,5:1, 3:1 pour les grands textes et les bordures de champ) dans les deux thèmes, survol compris |
-| A7 | Focus visible sur chaque élément interactif ; ordre clavier = ordre de lecture |
+| A7 | Focus visible sur chaque élément interactif, champs en lecture seule compris (Total d'une ligne, atteint au Tab) ; ordre clavier = ordre de lecture |
 | A8 | Pas de transition si `prefers-reduced-motion: reduce` |
 | A9 | Changement de vue (pas au premier chargement) : le focus va au contenu principal, ou, au retour à la liste, à la carte de la facture quittée ; le titre de la vue est annoncé (région de statut) |
 | A10 | Un dialogue fermé rend le focus au bouton qui l'a ouvert |
@@ -190,8 +191,8 @@ S15 Given le formulaire rempli (2 lignes, Net 7 Days)   When « Save & Send »  
                                    paymentDue = createdAt + 7 jours, totaux des lignes et de la facture (D5), tous les champs gardés
 S16 Given le formulaire avec seulement Client's Name   When « Save as Draft »   Then une facture draft, sans erreur
 S17 Given un e-mail « alex@ » · une Qty. à 0   When « Save & Send »   Then « invalid email » · « must be positive »
-S18 Given le formulaire   When je change Qty. ou Price   Then le Total de la ligne se met à jour ; « + Add New Item » ajoute une ligne ;
-                          « Delete item 1 » la retire
+S18 Given le formulaire   When je change Qty. ou Price   Then le Total de la ligne se met à jour, en lecture seule, atteint au Tab après Price ;
+                          « + Add New Item » ajoute une ligne ; « Delete item 1 » la retire
 S19 Given le formulaire modifié   When « Discard » ou Échap   Then rien n'est créé, le focus revient à « New Invoice »
 
 Modifier, payer, supprimer
@@ -207,8 +208,8 @@ S24 Given une facture   When « Delete »   Then dialogue d'alerte « Confirm De
 
 Persistance et thème
 S25 Given une création, une modification, un paiement, une suppression   When je recharge   Then chaque changement est retrouvé
-S26 Given le navigateur vidé de ses données, ou des données gardées sans la forme de D1 ([null], facture sans lignes)   When je recharge
-    Then les 7 factures de data.json
+S26 Given le navigateur vidé de ses données, ou des données gardées sans la forme de D1 ([null], facture sans lignes, quantité négative,
+    date 18/08/2021, terme 5)   When je recharge   Then les 7 factures de data.json ; Given une facture gardée au total faux   Then son total recalculé
 S27 Given l'appareil en thème sombre, premier passage   Then le thème sombre ; When je clique le bouton du thème   Then le clair,
                                                          gardé au rechargement ; When je clique de nouveau   Then le sombre, gardé
 S28 Given chaque thème   Then fonds, textes et badges de la §4

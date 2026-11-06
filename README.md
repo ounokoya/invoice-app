@@ -1,24 +1,27 @@
-# Frontend Mentor - Invoice app
+# Frontend Mentor - Invoice app solution
 
-![Design preview for the Invoice app coding challenge](./preview.jpg)
+This is a solution to the [Invoice app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/invoice-app-i7KaLTQjl). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-## Welcome! 👋
+## Table of contents
 
-Thanks for purchasing this premium Frontend Mentor coding challenge.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [Workflow](#workflow)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [Useful resources](#useful-resources)
+  - [AI Collaboration](#ai-collaboration)
+- [Author](#author)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects. These premium challenges are perfect portfolio pieces, so please feel free to use what you create in your portfolio to show others.
+## Overview
 
-**To do this challenge, you need a strong understanding of HTML, CSS, and JavaScript.**
+### The challenge
 
-## The challenge
-
-Your challenge is to build out this invoicing application and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-We provide the data in a local `data.json` file, so use that to populate the content on first load. If you want to take it up a notch, feel free to build this as a full-stack application!
-
-Your users should be able to:
+Users should be able to:
 
 - View the optimal layout for the app depending on their device's screen size
 - See hover states for all interactive elements on the page
@@ -27,98 +30,114 @@ Your users should be able to:
 - Save draft invoices, and mark pending invoices as paid
 - Filter invoices by status (draft/pending/paid)
 - Toggle light and dark mode
-- **Bonus**: Keep track of any changes, even after refreshing the browser (`localStorage` could be used for this if you're not building out a full-stack app)
+- **Bonus**: Keep track of any changes, even after refreshing the browser
 
-### Want some support on the challenge?
+### Screenshot
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+![Invoice list on desktop, light theme](./screenshot.jpg)
 
-### Expected Behaviour
+| Invoice | Form validation | Delete prompt | Status filter |
+|---|---|---|---|
+| ![Invoice XM9141 on desktop](./screenshots/invoice.jpg) | ![New invoice drawer with every empty field in error](./screenshots/form-errors.jpg) | ![Delete confirmation for invoice XM9141](./screenshots/delete.jpg) | ![List filtered to the 4 pending invoices](./screenshots/filter.jpg) |
 
-- Creating an invoice
-  - When creating a new invoice, an ID needs to be created. Each ID should be 2 random uppercased letters followed by 4 random numbers.
-  - Invoices can be created either as drafts or as pending. Clicking "Save as Draft" should allow the user to leave any form field blank, but should create an ID if one doesn't exist and set the status to "draft". Clicking "Save & Send" should require all forms fields to be filled in, and should set the status to "pending".
-  - Changing the Payments Terms field should set the `paymentDue` property based on the `createdAt` date plus the numbers of days set for the payment terms.
-  - The `total` should be the sum of all items on the invoice.
-- Editing an invoice
-  - When saving changes to an invoice, all fields are required when the "Save Changes" button is clicked. If the user clicks "Cancel", any unsaved changes should be reset.
-  - If the invoice being edited is a "draft", the status needs to be updated to "pending" when the "Save Changes" button is clicked. All fields are required at this stage.
-- Users should be able to mark invoices as paid by clicking the "Mark as Paid" button. This should change the invoice's status to "paid".
-- Users should receive a confirmation modal when trying to delete invoices.
-- Feel free not to add custom styling for the date and dropdown form fields. The designs for those fields are optional extras and are mostly for illustration purposes.
+| Dark theme | Mobile | Tablet, no invoices |
+|---|---|---|
+| ![Invoice list on desktop, dark theme](./screenshots/dark.jpg) | ![Invoice XM9141 on mobile, with the action bar at the bottom](./screenshots/mobile.jpg) | ![Empty state on tablet](./screenshots/tablet-empty.jpg) |
 
-## Where to find everything
+### Links
 
-Your task is to build out the project to the design file provided. You can download the Figma design file on the platform. You can download the design file on the platform. **Please be sure not to share them with anyone else.** The design download comes with a `README.md` file as well to help you get set up.
+- Live Site URL: [ounokoya.github.io/invoice-app](https://ounokoya.github.io/invoice-app/)
 
-All the required assets for this project are in the `/assets` folder. The assets are already exported for the correct screen size and optimized. Some images are reusable at multiple screen sizes. So if you don't see an image in a specific folder, it will typically be in another folder for that page.
+## My process
 
-The design system in the design file will give you more information about the various colors, fonts, and styles used in this project.
+### Built with
 
-## Using AI coding assistants
+- Semantic HTML: one `h1` per view, a native `<dialog>` for the form drawer and for the delete prompt (`role="alertdialog"`), a `fieldset` and `legend` for each address group and item row, a `<table>` for the items from 768 px, `<address>` for the addresses
+- [Svelte 5](https://svelte.dev/) with runes, as a single page built with [Vite](https://vite.dev/) (no SvelteKit)
+- [Tailwind CSS v4](https://tailwindcss.com/) — tokens read from the Figma file in `@theme`, default palette removed, colours by role (`page`, `surface`, `label`…) redefined for the dark theme, shared components as `@utility` (buttons, fields, badges)
+- One store of invoices in a `.svelte.js` module, saved to `localStorage`; the 7 invoices of `data.json` on first load
+- Hash routing (`#/?status=pending,paid`, `#/invoice/XM9141`): the filter and the open invoice survive a reload and the Back button works on GitHub Pages
+- Native `input type="date"` and `select` for the date and the payment terms, styled like the design when closed
+- League Spartan served with the site through [Fontsource](https://fontsource.org/fonts/league-spartan)
+- [Playwright](https://playwright.dev/), [axe-core](https://github.com/dequelabs/axe-core), the W3C Nu validator, html-validate and ESLint for tests
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+### Workflow
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+Before any code, the design was analysed and rebuilt:
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+1. **Figma file read without Figma** — the `.fig` file was decoded with a small script (`scripts/fig/`): exact positions, sizes, colours and letter spacing, and reference images of 55 screens rendered from the file's own geometry. The premium design files stay out of the repository (ADR-0010).
+2. **Visual analysis in Excalidraw** — screens, interactive elements, design inconsistencies and a contrast audit of both themes → [`specs/visuel/`](./specs/visuel/)
+3. **Penpot mockup** — library, components with their hover and focus states, key screens → [`specs/visuel/penpot/`](./specs/visuel/penpot/)
+4. **Spec, then tests** — 34 Given/When/Then scenarios and the accessible names the tests rely on → [`specs/specifications/`](./specs/specifications/); the Playwright tests were written before the code and checked to fail on the starter
+5. **Decisions** — Svelte, tokens and themes, routing, persistence, dialogs, formats, publication → [`specs/adr/`](./specs/adr/)
+6. **Code** — one commit per part (base, list, invoice and delete, form, fixes), then a walk-through in a real browser from 320 to 1440 px → [`specs/analyse/`](./specs/analyse/)
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+### What I learned
 
-## Building your project
+**State shared outside components.** Svelte 5 runes also work in plain modules named `.svelte.js`: the list, the invoice page and the form all read and change the same store, and every change is saved:
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+```js
+export const store = $state({ invoices: load() })
 
-1. Separate the `starter-code` from the rest of this project and rename it to something meaningful for you. Initialize the codebase as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/). **⚠️ IMPORTANT ⚠️: There are already a couple of `.gitignore` files in this project. Please do not remove them or change the content of the files. If you create a brand new project, please use the `.gitignore` files provided in your new codebase. This is to avoid the accidental upload of the design files to GitHub. With these premium challenges, please be sure not to share the design files in your GitHub repo. Thanks!**
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+export function markPaid(id) {
+  find(id).status = 'paid'
+  save()
+}
+```
 
-## Deploying your project
+**Keeping the app bar above a modal drawer.** `showModal()` puts the dialog in the top layer, and its backdrop covers everything, including the app bar that the design keeps visible next to the form. The drawer draws a decorative copy of the bar inside the dialog: it shows above the backdrop, but screen readers skip it and the keyboard cannot reach it:
 
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
+```svelte
+{#if decorative}
+  <div class="bar" aria-hidden="true" inert>{@render content()}</div>
+{/if}
+```
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+**Absolute helpers inside a scroll container.** The visually hidden labels of the item rows (`position: absolute`) took the fixed `<dialog>` as their containing block, not the scrolling `<div>` inside it. The dialog then grew a second scrollbar. The tests did not see it; the walk-through in a real browser did. `position: relative` on the scroller keeps them where they belong.
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
+**A shadow only while there is more to read.** The design's "With Scroll" screens show a gradient above the buttons. It is visible only while part of the form is still below the footer, measured on scroll and whenever the form changes size (new item, error messages):
 
-## Create a custom `README.md`
+```js
+const measure = () => { more = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight > 1 }
+$effect(() => {
+  const observer = new ResizeObserver(measure)
+  observer.observe(scroller)
+  observer.observe(scroller.firstElementChild)
+  return () => observer.disconnect()
+})
+```
 
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
+**Validation written for the design.** The design shows its own messages ("can't be empty" next to the label, two lines at the bottom), so the form uses `novalidate` and its own rules. Each field gets `aria-invalid` and `aria-describedby`, and focus moves to the first field in error.
 
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
+### Continued development
 
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
+- **Design inconsistencies.** The tablet empty state says "Create a new invoice…" while desktop and mobile say "Create an invoice…": one text everywhere. One screen shows the counter "There is currently 14 invoices active": the counter always says "There are N total invoices", and follows the filter ("There are 4 pending invoices"). "Mark as Paid" is offered for pending invoices only, and a paid invoice stays paid when edited.
+- **Accessibility.** The dark theme passes AA everywhere; in the light theme, 14 text/background pairs were under 4.5:1 and use the nearest AA shade of the same hue: secondary text `#888eb0` → `#68709b`, "Paid" `#33d69f` → `#1a8360`, "Pending" `#ff8f00` → `#ab6000`, white on the violet buttons with `#7757fa`, white on "Delete" with `#e62525`. Every button and link has a 2 px focus outline; fields show the design's violet border.
+- **Native controls.** The date picker and the payment terms list open as the browser's own lists (the challenge allows it); closed, they look like the design.
+- **Visual comparison with the Figma file.** Screenshots of 21 screens differ from the reference images by 0.4–3.1 % (threshold 5 %), mostly text antialiasing between Figma's glyph outlines and Chromium.
+- **Next steps.** An undo after deleting an invoice, and a back end so the invoices follow the user from one device to another.
 
-## Submitting your solution
+### Useful resources
 
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) for tips on how to do this.
+- [MDN — The Dialog element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — modal behaviour, focus and `::backdrop`.
+- [MDN — inert](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert) — keeping the decorative app bar out of reach.
+- [MDN — ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) — knowing when the form changes size.
+- [Svelte docs — $state](https://svelte.dev/docs/svelte/$state) — runes in `.svelte.js` modules.
+- [evanw/kiwi](https://github.com/evanw/kiwi) — the binary schema format inside `.fig` files.
 
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+### AI Collaboration
 
-**⚠️ IMPORTANT ⚠️: With these premium challenges, please be sure not to upload the design files to GitHub when you're submitting to the platform and sharing it around. If you've created a brand new project, the easiest way to do that is to copy across the `.gitignore` provided in this starter project.**
+I used **Claude (Claude Code)** as a pair, inside my own spec-driven workflow where I validated each step before the next one:
 
-## Sharing your solution
+- **Planning**: Claude proposed the order of the premium challenges and the stack options; I chose Svelte 5 and a front-end app that keeps its data in the browser.
+- **Design analysis and mockup**: Claude decoded the Figma file, drew the Excalidraw analysis and built the Penpot mockup; I reviewed both and decided how to handle the design's inconsistencies and the AA colour fixes.
+- **Spec and tests**: written by Claude before any code, from the validated mockup.
+- **Technical decisions**: Claude presented options with their trade-offs in the ADRs; I approved them, and the font download.
+- **Code**: written by Claude from the spec — I confirmed this split at the code lock — one commit per part, with the tests run at each step.
 
-There are multiple places you can share your solution:
+What worked well: tests written before the code gave a clear target (positions within 1–2 px of the Figma file), and the walk-through in a real browser caught what they missed: the double scrollbar, and the gradient and slim scrollbar of the "With Scroll" screens, which my reference renderer did not draw. What needed my decisions: the design's inconsistencies, the colour fixes and every choice listed above.
 
-1. Share your solution page in the **#finished-projects** channel of the [community](https://www.frontendmentor.io/community). 
-2. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+## Author
 
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback. 
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-**Have fun building!** 🚀
-
+- Frontend Mentor - [@ounokoya](https://www.frontendmentor.io/profile/ounokoya)
+- GitHub - [@ounokoya](https://github.com/ounokoya)

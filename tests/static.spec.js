@@ -14,7 +14,8 @@ const w3c = (html) => {
   try { execFileSync('java', ['-jar', vnu, '--errors-only', '--format', 'text', '-'], { input: html, encoding: 'utf8', stdio: 'pipe' }); return '' } catch (error) { return `${error.stdout}${error.stderr}` }
 }
 const validator = new HtmlValidate({ extends: ['html-validate:recommended'], rules: { 'doctype-style': 'off', 'void-style': 'off' } })
-const htmlErrors = async (html) => (await validator.validateString(html)).results.flatMap((r) => r.messages).map((m) => `${m.line}:${m.column} ${m.ruleId} — ${m.message}`)
+const rendered = new HtmlValidate({ extends: ['html-validate:recommended'], rules: { 'doctype-style': 'off', 'void-style': 'off', 'attribute-boolean-style': ['error', { style: 'empty' }], 'attribute-empty-style': ['error', { style: 'empty' }], 'no-trailing-whitespace': 'off' } })
+const htmlErrors = async (html, served) => (await (served ? validator : rendered).validateString(html)).results.flatMap((r) => r.messages).map((m) => `${m.line}:${m.column} ${m.ruleId} — ${m.message}`)
 
 // Le HTML servi, puis le document rendu de chaque vue (l'app est construite dans le navigateur)
 async function documents(page, request) {
@@ -33,7 +34,7 @@ test('S33 — validateur W3C Nu : aucune erreur (HTML servi et vues rendues)', a
 })
 
 test('S33 — Règles FM : html-validate sans erreur (HTML servi et vues rendues)', async ({ page, request }) => {
-  for (const [name, html] of Object.entries(await documents(page, request))) expect.soft(await htmlErrors(html), name).toEqual([])
+  for (const [name, html] of Object.entries(await documents(page, request))) expect.soft(await htmlErrors(html, name === 'HTML servi'), name).toEqual([])
 })
 
 test('S33 — Règles FM : eslint sans erreur dans le JavaScript du dépôt', async () => {

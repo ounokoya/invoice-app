@@ -31,6 +31,7 @@ export async function open(page, width, height = 900, { path = './', theme = 'li
     }, [KEY, invoices ?? null, THEME_KEY, storedTheme ?? null])
   }
   await page.goto(path)
+  if ((invoices || storedTheme) && path.includes('#')) await page.reload()
   await page.evaluate(() => document.fonts.ready)
 }
 

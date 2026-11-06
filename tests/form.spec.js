@@ -34,6 +34,7 @@ test('S14 — « Save & Send » vide : chaque champ en erreur, les deux messages
   await expect(d.getByText("can't be empty")).toHaveCount(all.length)
   await expect(d.getByText('- All fields must be added')).toBeVisible()
   await expect(d.getByText('- An item must be added')).toBeVisible()
+  for (const m of ['- All fields must be added', '- An item must be added']) await expect(d.getByRole('alert'), 'messages du bas annoncés').toContainText(m)
   await expect(field(group(d, 'Bill From'), 'Street Address')).toBeFocused()
   await button(d, 'Discard').click()
   await expect(cards(page)).toHaveCount(DATA.length)

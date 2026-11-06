@@ -45,3 +45,17 @@ test('S12 — « Mark as Paid » pour une facture pending seulement', async ({ p
     await expect(button(page, 'Mark as Paid'), id).toHaveCount(shown ? 1 : 0)
   }
 })
+
+// Spec §7 (A9) — S35 : focus et annonce au changement de vue
+test('S35 — ouvrir une facture : focus sur le contenu, vue annoncée, Tab vers « Go back » ; retour : focus sur la carte quittée', async ({ page }) => {
+  await open(page, 1440, 900)
+  await card(page, 'RT2080').click()
+  await expect(title(page, '#RT2080')).toBeVisible()
+  await expect(main(page)).toBeFocused()
+  await expect(page.getByRole('status')).toHaveText('Invoice #RT2080')
+  await page.keyboard.press('Tab')
+  await expect(goBack(page)).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(card(page, 'RT2080')).toBeFocused()
+  await expect(page.getByRole('status')).toHaveText('Invoices')
+})

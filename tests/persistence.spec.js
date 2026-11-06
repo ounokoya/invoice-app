@@ -47,6 +47,12 @@ test('S27 — thème de l\'appareil au premier passage, puis le choix gardé', a
   await page.reload()
   expect(close(await pixel(page, 600, 30), hex('#f8f8fb')), 'fond clair gardé').toBe(true)
   await expect(themeButton(page)).toHaveAccessibleName('Switch to dark theme')
+  await themeButton(page).click()
+  expect(close(await pixel(page, 600, 30), hex('#141625')), 'retour au sombre').toBe(true)
+  expect(await page.evaluate((k) => localStorage.getItem(k), THEME_KEY)).toBe('dark')
+  await page.reload()
+  expect(close(await pixel(page, 600, 30), hex('#141625')), 'sombre gardé').toBe(true)
+  await expect(themeButton(page)).toHaveAccessibleName('Switch to light theme')
 })
 
 const THEMES = {

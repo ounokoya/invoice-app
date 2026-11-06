@@ -88,3 +88,28 @@ Parcours réel (1440 px) : `[null]` gardé → les 7 factures ; Tab jusqu'à « 
 ## v1.0.2 publiée (2026-11-06, accord de Koya : « Oui, publie »)
 
 `main` et `v1.0.2` poussés, `gh-pages` publié ; `BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test --workers=2` : **96 réussis sur 96**. Nouveau rapport : avec l'accord de Koya.
+
+## Rapport regénéré sur la v1.0.2 (2026-11-06, accord de Koya : « Oui, regénère »)
+
+| Partie | v1.0.0 | v1.0.1 | v1.0.2 |
+|---|---|---|---|
+| **Global** | 8,8 | 9,0 | **9,3** |
+| Code Quality | 8,9 | 8,9 | 9,2 |
+| Best Practices | 9,1 | 9,0 | 9,2 |
+| File Organization | 9,6 | 9,8 | 9,8 |
+| Architecture | 9,3 | 9,5 | 9,5 |
+| Testing | 6,2 | 6,2 | **7,6** (Edit, Delete, Mark as Paid reconnus) |
+| Design & UX / Accessibility | 7,7 | 8,8 | 9,1 (paiement annoncé, avatar : relevés) |
+| Documentation | 9,7 | 9,8 | 9,8 |
+
+| # | Partie | Remarque FM | Verdict | Proposition |
+|---|---|---|---|---|
+| P1 | Best Practices (« needs attention ») | `isInvoice` accepte des lignes vides, des nombres négatifs, des dates mal écrites et des totaux qui ne suivent pas les lignes | **En partie** : une facture sans ligne est un brouillon permis (S16) ; le reste est juste | Dates `AAAA-MM-JJ`, nombres positifs ou nuls ; totaux recalculés depuis les lignes au chargement plutôt que refusés ; S26 étendu |
+| P2 | Best Practices (« needs attention ») | `invoice.html` toujours présent | **Faux positif** (3e fois) : absent du dépôt depuis la v1.0.1 | Aucune |
+| P3 | Testing (« needs attention ») | Filtre seulement survolé | **Faux positif** (R1, N3) : S8, S9, S11 | Aucune |
+| P4 | Testing (« needs attention ») | Thème jamais basculé dans les deux sens | **Faux positif** (N5) : S27 | Aucune |
+| P5 | Accessibility (« needs attention ») | Le Total calculé de chaque ligne (`readonly`) est retiré de l'ordre du Tab : un utilisateur au clavier ne peut pas le lire | Juste | Garder les champs en lecture seule dans l'ordre du Tab, avec un contour de focus visible (le style « texte » les rend sans bordure) ; S18 et S31 |
+
+Profil FM : toujours 375 / 400 points.
+
+Proposition : v1.0.3 avec P1 (en partie) et P5, avec l'accord de Koya ; ou s'arrêter là (9,3) et passer au Guru 2.

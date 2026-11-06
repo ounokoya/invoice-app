@@ -71,13 +71,18 @@ Before any code, the design was analysed and rebuilt:
 1. **Figma file read without Figma** — the `.fig` file was decoded with a small script (`scripts/fig/`): exact positions, sizes, colours and letter spacing, and reference images of 55 screens rendered from the file's own geometry. The premium design files stay out of the repository (ADR-0010).
 2. **Visual analysis in Excalidraw** — screens, interactive elements, design inconsistencies and a contrast audit of both themes → [`specs/visuel/`](./specs/visuel/)
 3. **Penpot mockup** — library, components with their hover and focus states, key screens → [`specs/visuel/penpot/`](./specs/visuel/penpot/)
-4. **Spec, then tests** — 35 Given/When/Then scenarios and the accessible names the tests rely on → [`specs/specifications/`](./specs/specifications/); the Playwright tests were written before the code and checked to fail on the starter
+4. **Spec, then tests** — 37 Given/When/Then scenarios, 7 business rules and the accessible names the tests rely on → [`specs/specifications/`](./specs/specifications/); the Playwright tests were written before the code and checked to fail on the starter
 5. **Decisions** — Svelte, tokens and themes, routing, persistence, dialogs, formats, publication → [`specs/adr/`](./specs/adr/)
 6. **Code** — one commit per part (base, list, invoice and delete, form, fixes), then a walk-through in a real browser from 320 to 1440 px → [`specs/analyse/`](./specs/analyse/)
 
 ### Tests
 
-96 Playwright tests, derived from the spec's scenarios (S1–S35), run on the build (`npm test`) and on the live site (`BASE_URL=https://ounokoya.github.io/invoice-app/ npm test`). Where each user flow is tested:
+105 tests derived from the spec, at two levels:
+
+- **7 unit tests** of the pure business rules (U1–U7) with Node's built-in test runner, no browser: `npm run test:unit` → [`tests/unit/`](./tests/unit/)
+- **98 Playwright tests** of every user flow (S1–S37), on the build (`npm test` runs both levels) and on the live site (`BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test`)
+
+Where each rule and each user flow is tested:
 
 | What users can do | Scenarios | File |
 |---|---|---|
@@ -88,9 +93,12 @@ Before any code, the design was analysed and rebuilt:
 | Create an invoice: empty form, every error message, full invoice, draft, item totals, Discard and Escape | S13–S19 | [`form.spec.js`](./tests/form.spec.js) |
 | Edit and save, complete a draft, mark as paid, delete after confirmation | S20–S24 | [`edit.spec.js`](./tests/edit.spec.js) |
 | Keep every change after a reload (invalid saved data falls back to `data.json`, saved totals are recalculated); toggle the theme both ways; colours of both themes | S25–S28 | [`persistence.spec.js`](./tests/persistence.spec.js) |
-| Hover states, reduced motion, keyboard to the last element, focus kept in dialogs | S29–S31 | [`interactions.spec.js`](./tests/interactions.spec.js) |
+| Hover states (light and dark, the dark theme chosen with its button), reduced motion, keyboard to the last element, focus kept in dialogs | S29–S31 | [`interactions.spec.js`](./tests/interactions.spec.js) |
+| Filter with the keyboard: Enter opens, Space checks each status, cards, counter and address follow, Escape closes | S36 | [`interactions.spec.js`](./tests/interactions.spec.js) |
+| Theme button with the keyboard, both ways: background, `data-theme`, accessible name, saved choice | S37 | [`interactions.spec.js`](./tests/interactions.spec.js) |
 | axe-core in every view, size and theme; W3C Nu, html-validate and ESLint | S32, S33 | [`accessibility.spec.js`](./tests/accessibility.spec.js), [`static.spec.js`](./tests/static.spec.js) |
 | 21 screens compared with images rendered from the Figma file | S34 | [`visual.spec.js`](./tests/visual.spec.js) |
+| Business rules without a browser: new ids, totals rounded to the cent, every validation message, dates and due dates across months and years, drafts, saved-data checks, formats | U1–U7 | [`rules.test.js`](./tests/unit/rules.test.js), [`format.test.js`](./tests/unit/format.test.js) |
 | Architecture rules: colours only in the tokens, nothing loaded from other domains, no design file in the repository | ADR-0004, 0005, 0011 | [`fitness.spec.js`](./tests/fitness.spec.js) |
 
 ### What I learned

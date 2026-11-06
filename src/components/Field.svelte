@@ -9,7 +9,7 @@
     <label for={id}>{label}</label>
     {#if error}<span class="msg" id="{id}-error">{error}</span>{/if}
   </div>
-  <input class="field" class:compact {id} {type} bind:value {placeholder} {readonly} {disabled} {inputmode} tabindex={readonly ? -1 : undefined}
+  <input class="field" class:compact {id} {type} bind:value {placeholder} {readonly} {disabled} {inputmode}
     aria-invalid={error ? 'true' : undefined} aria-describedby={error ? `${id}-error` : undefined}>
 </div>
 
@@ -25,6 +25,12 @@
   input[readonly] { @apply border-transparent bg-transparent px-0 text-label; }
 
   input[readonly]:hover { border-color: transparent; }
+
+  /* A7 : le Total d'une ligne, en lecture seule et sans bordure, reste au Tab avec le contour des boutons */
+  input[readonly]:focus-visible {
+    outline: 0.125rem solid var(--focus);
+    outline-offset: 0.125rem;
+  }
 
   input:disabled { @apply cursor-not-allowed opacity-50; }
 

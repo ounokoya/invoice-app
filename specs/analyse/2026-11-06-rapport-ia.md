@@ -83,4 +83,8 @@ Proposition : v1.0.2 avec N1 et N6 (deux commits, tests rouges d'abord), avec l'
 | N1 | `load()` ne garde un tableau que si chaque facture a la forme de D1 (id, statut connu, textes, nombres, adresses, lignes) ; sinon `data.json` | S26 : `[null]`, facture sans `items`, statut inconnu (rouge avant) |
 | N6 | Région de statut partagée (`announce.svelte.js`) ; après « Mark as Paid » : « Invoice #XM9141 marked as paid » annoncé, focus sur « Edit » | S23 (rouge avant) |
 
-Parcours réel (1440 px) : `[null]` gardé → les 7 factures ; Tab jusqu'à « Mark as Paid », Entrée → badge Paid, focus sur « Edit » (contour visible), statut annoncé. **96 / 96**. Publication puis rapport : chacun avec l'accord de Koya.
+Parcours réel (1440 px) : `[null]` gardé → les 7 factures ; Tab jusqu'à « Mark as Paid », Entrée → badge Paid, focus sur « Edit » (contour visible), statut annoncé. **96 / 96**.
+
+## v1.0.2 publiée (2026-11-06, accord de Koya : « Oui, publie »)
+
+`main` et `v1.0.2` poussés, `gh-pages` publié ; `BASE_URL=https://ounokoya.github.io/invoice-app/ npx playwright test --workers=2` : **96 réussis sur 96**. Nouveau rapport : avec l'accord de Koya.

@@ -69,6 +69,19 @@ test('S16 — « Save as Draft » avec le seul nom du client : un brouillon, san
   expect(saved).toMatchObject({ status: 'draft', clientName: 'Ada Lovelace' })
   expect(saved.id).toMatch(/^[A-Z]{2}\d{4}$/)
   await expect(card(page, saved.id)).toContainText('Draft')
+
+  // Date vidée et Qty. négative : un brouillon que l'app relira (D2, P1)
+  await newButton(page).click()
+  await field(d, 'Invoice Date').fill('')
+  await field(group(group(d, 'Item List'), 'Item 1'), 'Qty.').fill('-2')
+  await button(d, 'Save as Draft').click()
+  await expect(d).toBeHidden()
+  const today = await page.evaluate(() => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}` })
+  const draft = (await stored(page)).at(-1)
+  expect(draft).toMatchObject({ status: 'draft', createdAt: today })
+  expect(draft.items[0].quantity).toBe(0)
+  await page.reload()
+  await expect(card(page, draft.id)).toContainText('Draft')
 })
 
 test('S17 — e-mail mal écrit, quantité nulle : « invalid email », « must be positive »', async ({ page }) => {

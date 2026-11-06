@@ -4,7 +4,7 @@
 > Cette spec dit **quoi** et **pourquoi**, jamais **comment**.
 > v1.0.1 (2026-11-06, accord de Koya) : remarques R3 à R6 du rapport IA FM (`specs/analyse/2026-11-06-rapport-ia.md`) : A3 complété, A9 et A10 ajoutés, S14, S24 et S27 étendus, S35 ajouté.
 > v1.0.2 (2026-11-06, accord de Koya) : remarques N1 et N6 du rapport regénéré : D2 complété, A11 ajouté, S23 et S26 étendus.
-> v1.0.3 (2026-11-06, accord de Koya) : remarques P1 (en partie) et P5 du rapport regénéré : D2 et A7 précisés, S18 et S26 étendus.
+> v1.0.3 (2026-11-06, accord de Koya) : remarques P1 (en partie) et P5 du rapport regénéré : D2 et A7 précisés, S16, S18 et S26 étendus.
 
 ## 1. Objectif
 
@@ -189,7 +189,8 @@ S13 Given « New Invoice »   Then dialogue « New Invoice », champs vides sauf
 S14 Given le formulaire vide   When « Save & Send »   Then chaque champ « can't be empty », les deux messages du bas (annoncés), focus sur le 1er champ, rien n'est créé
 S15 Given le formulaire rempli (2 lignes, Net 7 Days)   When « Save & Send »   Then une 8e facture pending : id au format D3, unique,
                                    paymentDue = createdAt + 7 jours, totaux des lignes et de la facture (D5), tous les champs gardés
-S16 Given le formulaire avec seulement Client's Name   When « Save as Draft »   Then une facture draft, sans erreur
+S16 Given le formulaire avec seulement Client's Name   When « Save as Draft »   Then une facture draft, sans erreur ;
+    Given la date vidée et une Qty. négative   When « Save as Draft »   Then la date du jour et une Qty. à 0 (v1.0.3)
 S17 Given un e-mail « alex@ » · une Qty. à 0   When « Save & Send »   Then « invalid email » · « must be positive »
 S18 Given le formulaire   When je change Qty. ou Price   Then le Total de la ligne se met à jour, en lecture seule, atteint au Tab après Price ;
                           « + Add New Item » ajoute une ligne ; « Delete item 1 » la retire

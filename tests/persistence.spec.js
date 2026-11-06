@@ -35,6 +35,14 @@ test('S26 — navigateur vidé : les 7 factures de data.json', async ({ page }) 
   await page.evaluate((key) => localStorage.removeItem(key), KEY)
   await page.reload()
   await expect(cards(page)).toHaveCount(DATA.length)
+
+  // Données gardées sans la forme de D1 : data.json est relu (rapport regénéré, N1)
+  const { items, ...withoutItems } = DATA[0]
+  for (const saved of [[null], [withoutItems], [{ ...DATA[0], status: 'sent' }]]) {
+    await open(page, 1440, 900, { invoices: saved })
+    await expect(cards(page), JSON.stringify(saved).slice(0, 40)).toHaveCount(DATA.length)
+  }
+  expect(items.length).toBeGreaterThan(0)
 })
 
 test('S27 — thème de l\'appareil au premier passage, puis le choix gardé', async ({ page }) => {

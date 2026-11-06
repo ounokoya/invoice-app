@@ -73,6 +73,8 @@ test('S23 — « Mark as Paid » : badge Paid, bouton absent, carte Paid', async
   await button(page, 'Mark as Paid').click()
   await expect(main(page)).toContainText('Paid')
   await expect(button(page, 'Mark as Paid')).toHaveCount(0)
+  await expect(page.getByRole('status'), 'nouveau statut annoncé').toHaveText('Invoice #XM9141 marked as paid')
+  await expect(button(page, 'Edit'), 'focus sur un bouton qui reste').toBeFocused()
   await goBack(page).click()
   await expect(card(page, 'XM9141')).toContainText('Paid')
 })

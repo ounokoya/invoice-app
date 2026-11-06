@@ -75,3 +75,12 @@ Parcours réel au clavier (1440 px) : Entrée sur une carte → focus sur le con
 Testing reste à 6,2 : les trois remarques de test sont reprises telles quelles, sans relire `list.spec.js`, `edit.spec.js` ni le S27 étendu, malgré la table « parcours → test » du README. Comme pour REST Countries, la note Testing de ce relecteur ne suit pas les tests du dépôt ; ne pas ajouter de tests en double pour elle.
 
 Proposition : v1.0.2 avec N1 et N6 (deux commits, tests rouges d'abord), avec l'accord de Koya.
+
+## v1.0.2 en local (2026-11-06, accord de Koya : « Oui, corrige »)
+
+| # | Fait | Test |
+|---|---|---|
+| N1 | `load()` ne garde un tableau que si chaque facture a la forme de D1 (id, statut connu, textes, nombres, adresses, lignes) ; sinon `data.json` | S26 : `[null]`, facture sans `items`, statut inconnu (rouge avant) |
+| N6 | Région de statut partagée (`announce.svelte.js`) ; après « Mark as Paid » : « Invoice #XM9141 marked as paid » annoncé, focus sur « Edit » | S23 (rouge avant) |
+
+Parcours réel (1440 px) : `[null]` gardé → les 7 factures ; Tab jusqu'à « Mark as Paid », Entrée → badge Paid, focus sur « Edit » (contour visible), statut annoncé. **96 / 96**. Publication puis rapport : chacun avec l'accord de Koya.

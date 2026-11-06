@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { open, main, card, newButton, filterButton, statusBox, button, dialog, group, field, style, sameColor } from './helpers.js'
+import { open, main, DATA, THEME_KEY, card, cards, counter, newButton, filterButton, statusBox, themeButton, button, dialog, group, field, style, sameColor, pixel, hex, close } from './helpers.js'
 
 // Spec §6 et §8 — S29 à S31
 
@@ -38,7 +38,9 @@ test('S29 — survol de « Save as Draft » et des boutons en thème sombre', as
   await newButton(page).click()
   const d = dialog(page, 'New Invoice')
   await hoverCheck(page, button(d, 'Save as Draft'), [['backgroundColor', '#0c0e16']], 'Save as Draft')
-  await open(page, 1440, 1000, { path: './#/invoice/XM9141', storedTheme: 'dark' })
+  await open(page, 1440, 1000, { path: './#/invoice/XM9141' })
+  await themeButton(page).click()
+  await expect(page.locator('html'), 'thème choisi par le bouton').toHaveAttribute('data-theme', 'dark')
   await hoverCheck(page, button(page, 'Edit'), [['backgroundColor', '#ffffff'], ['color', '#616db5']], 'Edit sombre')
 })
 
@@ -49,6 +51,55 @@ test('S30 — prefers-reduced-motion : aucune transition', async ({ page }) => {
     const b = button(page, name)
     await b.hover()
     expect.soft(Math.max(...(await style(b, 'transitionDuration')).split(',').map(parseFloat)), name).toBe(0)
+  }
+})
+
+// Spec §8 — S36 : le filtre au clavier, de l'ouverture au résultat
+test('S36 — filtre au clavier : Entrée ouvre, Espace coche ; cartes, compteur et adresse à chaque pas ; Échap ferme', async ({ page }) => {
+  await open(page, 1440, 1000)
+  await filterButton(page).focus()
+  await page.keyboard.press('Enter')
+  await expect(statusBox(page, 'Draft')).toBeVisible()
+  const ids = (statuses) => DATA.filter((inv) => statuses.includes(inv.status)).map((inv) => inv.id)
+  const expectList = async (statuses, sentence) => {
+    const expected = ids(statuses)
+    await expect(cards(page), statuses.join(', ')).toHaveCount(expected.length)
+    for (const [i, id] of expected.entries()) await expect(cards(page).nth(i)).toContainText(`#${id}`)
+    await expect(counter(page)).toHaveText(sentence)
+    await expect(page).toHaveURL(new RegExp(`#/\\?status=${statuses.join(',')}$`))
+  }
+  await page.keyboard.press('Tab')
+  await expect(statusBox(page, 'Draft')).toBeFocused()
+  await page.keyboard.press('Space')
+  await expectList(['draft'], 'There is 1 draft invoice')
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('Space')
+  await expectList(['draft', 'pending'], 'There are 5 draft or pending invoices')
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('Space')
+  await expectList(['draft', 'pending', 'paid'], 'There are 7 total invoices')
+  await page.keyboard.press('Shift+Tab')
+  await page.keyboard.press('Space')
+  await page.keyboard.press('Shift+Tab')
+  await page.keyboard.press('Space')
+  await expect(statusBox(page, 'Paid')).toBeChecked()
+  await expectList(['paid'], 'There are 2 paid invoices')
+  await page.keyboard.press('Escape')
+  await expect(statusBox(page, 'Draft')).toBeHidden()
+  await expect(filterButton(page)).toBeFocused()
+})
+
+// Spec §8 — S37 : le bouton du thème au clavier, dans les deux sens
+test('S37 — thème au clavier : Entrée passe au sombre puis revient au clair ; fond, data-theme, nom, choix gardé', async ({ page }) => {
+  await open(page, 1440, 900)
+  await themeButton(page).focus()
+  for (const [theme, background, next] of [['dark', '#141625', 'light'], ['light', '#f8f8fb', 'dark']]) {
+    await page.keyboard.press('Enter')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+    expect(close(await pixel(page, 600, 30), hex(background)), `fond ${theme}`).toBe(true)
+    await expect(themeButton(page)).toHaveAccessibleName(`Switch to ${next} theme`)
+    await expect(themeButton(page), 'le focus reste sur le bouton').toBeFocused()
+    expect(await page.evaluate((k) => localStorage.getItem(k), THEME_KEY)).toBe(theme)
   }
 })
 

@@ -6,6 +6,8 @@ const LOCAL = 'http://localhost:4260/invoice-app/'
 
 export default defineConfig({
   testDir: './tests',
+  // tests/unit : règles sans navigateur, lancées par node --test (npm run test:unit)
+  testIgnore: '**/unit/**',
   fullyParallel: true,
   reporter: [['list']],
   use: {
